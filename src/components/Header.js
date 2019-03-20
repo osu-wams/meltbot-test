@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faQuestionCircle } from "@fortawesome/pro-light-svg-icons";
 import logo from "../assets/logo.png";
-// import { Color } from "../theme";
+import VisuallyHidden from "@reach/visually-hidden";
+import { Color } from "../theme";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -28,8 +29,19 @@ const Header = () => {
     <HeaderWrapper>
       <Logo src={logo} alt="Oregon State University" />
       <div>
-        <FontAwesomeIcon icon={faSearch} size="2x" color="#777" />
-        <FontAwesomeIcon icon={faQuestionCircle} size="2x" color="#777" />
+        <a href="https://search.oregonstate.edu" target="_blank">
+          <FontAwesomeIcon
+            icon={faSearch}
+            size="2x"
+            color={Color["neutral-600"]}
+          />
+          <VisuallyHidden>Search Oregon State University</VisuallyHidden>
+        </a>
+        <FontAwesomeIcon
+          icon={faQuestionCircle}
+          size="2x"
+          color={Color["neutral-600"]}
+        />
       </div>
     </HeaderWrapper>
   );

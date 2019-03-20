@@ -4,6 +4,8 @@ import styled from "styled-components";
 import generateId from "uuid/v4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/pro-light-svg-icons";
+import VisuallyHidden from "@reach/visually-hidden";
+import { Color } from "./theme";
 import "./App.css";
 import Header from "./components/Header";
 import Message from "./components/Message";
@@ -111,7 +113,7 @@ const App = () => {
     <div className="App">
       <Header />
       <main>
-        <MessageList>
+        <MessageList role="log">
           {state.messages.length > 0 &&
             state.messages.map(({ id, type, text, followUpQuestions }) => (
               <div
@@ -121,8 +123,16 @@ const App = () => {
                 <Message type={type}>{text}</Message>
                 {followUpQuestions.length > 0 && (
                   <div style={{ display: "flex", flexWrap: "wrap" }}>
-                    {followUpQuestions.map(question => (
-                      <FollowUpQuestionButton>
+                    <VisuallyHidden>
+                      Choose one of the following questions or type a new one?
+                    </VisuallyHidden>
+                    {console.log(followUpQuestions)}
+                    {followUpQuestions.map((question, index) => (
+                      <FollowUpQuestionButton
+                        key={id + index}
+                        tabIndex={index + 1}
+                        className="weird"
+                      >
                         {question}
                       </FollowUpQuestionButton>
                     ))}
@@ -139,7 +149,11 @@ const App = () => {
             onChange={handleChange}
             placeholder="Ask a question"
           />
-          <FontAwesomeIcon icon={faArrowRight} size="2x" color="#d73f09" />
+          <FontAwesomeIcon
+            icon={faArrowRight}
+            size="2x"
+            color={Color["orange-400"]}
+          />
         </UserInputWrapper>
       </main>
     </div>
@@ -151,12 +165,18 @@ const FollowUpQuestionButton = styled.button`
   border: none;
   padding: 8px 12px;
   color: #ffffff;
-  background-color: #df3709;
+  background-color: ${Color["orange-400"]};
   border-radius: 99px;
+  cursor: pointer;
   &:not(:last-child) {
     margin-right: 16px;
   }
   margin-bottom: 12px;
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: ${Color["neutral-600"]};
+  }
 `;
 
 const MessageList = styled.div`
