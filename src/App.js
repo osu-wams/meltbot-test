@@ -14,8 +14,8 @@ var lexRuntime = new LexRuntime({
   apiVersion: "2016-11-28",
   region: "us-east-1",
   credentials: new CognitoIdentityCredentials(
-    { IdentityPoolId: process.env.IDENTITY_POOL_ID },
-    { region: process.env.REGION }
+    { IdentityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID },
+    { region: process.env.REACT_APP_REGION }
   )
 });
 
