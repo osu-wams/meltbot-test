@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { LexRuntime, CognitoIdentityCredentials } from 'aws-sdk';
-import styled from 'styled-components';
-import generateId from 'uuid/v4';
-import './App.css';
-import Header from './components/Header';
-import Message from './components/Message';
-import Input from './components/Input';
+import React, { useState, useEffect, useReducer } from "react";
+import { LexRuntime, CognitoIdentityCredentials } from "aws-sdk";
+import styled from "styled-components";
+import generateId from "uuid/v4";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/pro-light-svg-icons";
+import "./App.css";
+import Header from "./components/Header";
+import Message from "./components/Message";
+import UserInput from "./components/UserInput";
+import UserInputWrapper from "./components/UserInputWrapper";
 
 var lexRuntime = new LexRuntime({
-  apiVersion: '2016-11-28',
-  region: 'us-east-1',
+  apiVersion: "2016-11-28",
+  region: "us-east-1",
   credentials: new CognitoIdentityCredentials(
     { IdentityPoolId: process.env.IDENTITY_POOL_ID },
     { region: process.env.REGION }
@@ -22,18 +25,18 @@ const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_MESSAGE':
+    case "ADD_MESSAGE":
       return { messages: [...state.messages, action.message] };
     default:
-      throw new Error('AAAAAAAAAA');
+      throw new Error("AAAAAAAAAA");
   }
 };
 
 const actions = {
-  ADD_MESSAGE: 'ADD_MESSAGE'
+  ADD_MESSAGE: "ADD_MESSAGE"
 };
 
-const createMessage = ({ type = 'user', text, followUpQuestions = [] }) => ({
+const createMessage = ({ type = "user", text, followUpQuestions = [] }) => ({
   id: generateId(),
   type,
   text,
@@ -42,7 +45,7 @@ const createMessage = ({ type = 'user', text, followUpQuestions = [] }) => ({
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [userMessage, setUserMessage] = useState('');
+  const [userMessage, setUserMessage] = useState("");
 
   const addMessage = message => {
     dispatch({ type: actions.ADD_MESSAGE, message });
@@ -54,13 +57,13 @@ const App = () => {
     addMessage(message);
 
     // Clear input
-    setUserMessage('');
+    setUserMessage("");
 
     // Post user message to Lex
     lexRuntime
       .postText({
-        botName: 'QnABot_BotwR',
-        botAlias: '$LATEST',
+        botName: "QnABot_BotwR",
+        botAlias: "$LATEST",
         userId: `lex-web-ui-${Math.floor((1 + Math.random()) * 0x10000)
           .toString(16)
           .substring(1)}`,
@@ -79,7 +82,7 @@ const App = () => {
           );
         }
         const botResponse = createMessage({
-          type: 'bot',
+          type: "bot",
           text: data.message,
           followUpQuestions
         });
@@ -89,7 +92,7 @@ const App = () => {
   };
 
   const handleKeyDown = e => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       postMessage(userMessage);
     }
   };
@@ -101,43 +104,44 @@ const App = () => {
   const handleFollowUpClick = question => {};
 
   useEffect(() => {
-    postMessage('How do I pay my ATD?');
+    postMessage("How do I pay my ATD?");
   }, []);
 
   return (
     <div className="App">
       <Header />
-      <MessageList>
-        {state.messages.length > 0 &&
-          state.messages.map(({ id, type, text, followUpQuestions }) => (
-            <div key={id} style={{ display: 'flex', flexDirection: 'column' }}>
-              <Message type={type}>{text}</Message>
-              {followUpQuestions.length > 0 && (
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                  {followUpQuestions.map(question => (
-                    <FollowUpQuestionButton>{question}</FollowUpQuestionButton>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-      </MessageList>
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          padding: '16px'
-        }}
-      >
-        <Input
-          type="text"
-          onKeyDown={handleKeyDown}
-          value={userMessage}
-          onChange={handleChange}
-        />
-      </div>
+      <main>
+        <MessageList>
+          {state.messages.length > 0 &&
+            state.messages.map(({ id, type, text, followUpQuestions }) => (
+              <div
+                key={id}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <Message type={type}>{text}</Message>
+                {followUpQuestions.length > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap" }}>
+                    {followUpQuestions.map(question => (
+                      <FollowUpQuestionButton>
+                        {question}
+                      </FollowUpQuestionButton>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+        </MessageList>
+        <UserInputWrapper>
+          <UserInput
+            type="text"
+            onKeyDown={handleKeyDown}
+            value={userMessage}
+            onChange={handleChange}
+            placeholder="Ask a question"
+          />
+          <FontAwesomeIcon icon={faArrowRight} size="2x" color="#d73f09" />
+        </UserInputWrapper>
+      </main>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/pro-light-svg-icons";
+import { faSearch, faQuestionCircle } from "@fortawesome/pro-light-svg-icons";
 import logo from "../assets/logo.png";
 // import { Color } from "../theme";
 
@@ -13,6 +13,9 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
+  svg + svg {
+    margin-left: 12px;
+  }
 `;
 
 const Logo = styled.img`
@@ -26,6 +29,7 @@ const Header = () => {
       <Logo src={logo} alt="Oregon State University" />
       <div>
         <FontAwesomeIcon icon={faSearch} size="2x" color="#777" />
+        <FontAwesomeIcon icon={faQuestionCircle} size="2x" color="#777" />
       </div>
     </HeaderWrapper>
   );
