@@ -1,6 +1,6 @@
-import React, { useContext, useRef, useEffect } from "react";
-import styled from "styled-components";
-import { GlobalStateContext } from "../GlobalContext";
+import React, { useContext, useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import { GlobalStateContext } from '../GlobalContext';
 
 const MessageListWrapper = styled.div`
   overflow-y: auto;
@@ -13,7 +13,7 @@ const MessageListWrapper = styled.div`
 `;
 
 const MessageList = ({ ...props }) => {
-  const state = useContext(GlobalStateContext);
+  const { state } = useContext(GlobalStateContext);
   const messageListEl = useRef(null);
 
   // Scroll to bottom when new messages are added
@@ -21,7 +21,7 @@ const MessageList = ({ ...props }) => {
     setTimeout(() => {
       requestAnimationFrame(() => {
         const chat = messageListEl.current;
-        chat.scrollTo({ left: 0, top: chat.scrollHeight, behavior: "smooth" });
+        chat.scrollTo({ left: 0, top: chat.scrollHeight, behavior: 'smooth' });
       });
     });
   }, [state.messages]);

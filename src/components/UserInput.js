@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/pro-light-svg-icons";
-import { Color } from "../theme";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/pro-light-svg-icons';
+import { Color } from '../theme';
 
 const Input = styled.input`
   height: 42px;
@@ -32,24 +32,26 @@ const AskQuestionInput = styled.button`
 `;
 
 const UserInput = ({ onMessageEntered }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   const handleChange = e => {
     setValue(e.target.value);
   };
 
   const handleKeyDown = e => {
-    if (e.key === "Enter") {
-      dataSend();
+    if (e.key === 'Enter') {
+      sendMessage();
     }
   };
 
-  const dataSend = () => {
-    // Fire callback to handle message
-    onMessageEntered(value);
+  const sendMessage = () => {
+    if (value) {
+      // Fire callback to handle message
+      onMessageEntered(value);
 
-    // Clear input
-    setValue("");
+      // Clear input
+      setValue('');
+    }
   };
 
   return (
@@ -60,11 +62,11 @@ const UserInput = ({ onMessageEntered }) => {
         onKeyDown={handleKeyDown}
         aria-label="Enter a question for Benny"
       />
-      <AskQuestionInput onClick={dataSend} aria-label="Submit your question">
+      <AskQuestionInput onClick={sendMessage} aria-label="Submit your question">
         <FontAwesomeIcon
           icon={faArrowRight}
           size="2x"
-          color={Color["orange-400"]}
+          color={Color['orange-400']}
         />
       </AskQuestionInput>
     </UserInputWrapper>

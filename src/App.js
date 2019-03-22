@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import "./App.css";
-import { GlobalStateContext, actions } from "./GlobalContext";
-import { lexRuntime, createMessage } from "./lexUtils";
-import Header from "./components/Header";
-import Message from "./components/Message";
-import MessageList from "./components/MessageList";
-import UserInput from "./components/UserInput";
-import FollowUpQuestionButton from "./components/FollowUpQuestionButton";
-import VisuallyHidden from "@reach/visually-hidden";
+import React, { useEffect } from 'react';
+import './App.css';
+import { GlobalStateContext, actions } from './GlobalContext';
+import { lexRuntime, createMessage } from './lexUtils';
+import Header from './components/Header';
+import Message from './components/Message';
+import MessageList from './components/MessageList';
+import UserInput from './components/UserInput';
+import FollowUpQuestionButton from './components/FollowUpQuestionButton';
+import VisuallyHidden from '@reach/visually-hidden';
 
 const App = () => {
   const { state, dispatch } = React.useContext(GlobalStateContext);
@@ -21,15 +21,23 @@ const App = () => {
   };
 
   const postMessage = messageText => {
+    if (!messageText) {
+      return;
+    }
+
     // Add user's message to messages
     const message = createMessage({ text: messageText });
     addMessage(message);
+
+    // Add loading message
+    const loadingMessage = createMessage({ type: 'loading' });
+    addMessage(loadingMessage);
 
     // Post user message to Lex
     lexRuntime
       .postText({
         botName: process.env.REACT_APP_BOT_NAME,
-        botAlias: "$LATEST",
+        botAlias: '$LATEST',
         userId: `lex-web-ui-${Math.floor((1 + Math.random()) * 0x10000)
           .toString(16)
           .substring(1)}`,
@@ -37,6 +45,9 @@ const App = () => {
       })
       .promise()
       .then(data => {
+        // Remove loading message
+        dispatch({ type: actions.REMOVE_LOADING_MESSAGE });
+
         let followUpQuestions = [];
         if (
           data.responseCard &&
@@ -48,7 +59,7 @@ const App = () => {
           );
         }
         const botResponse = createMessage({
-          type: "bot",
+          type: 'bot',
           text: data.message,
           followUpQuestions
         });
@@ -75,7 +86,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    postMessage("How do I pay my ATD?");
+    postMessage('How do I pay my ATD?');
   }, []);
 
   return (
@@ -84,29 +95,35 @@ const App = () => {
       <main>
         <MessageList role="log">
           {state.messages.length > 0 &&
-            state.messages.map(({ id, type, text, followUpQuestions }) => (
-              <div
-                key={id}
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <Message type={type}>{text}</Message>
-                {followUpQuestions.length > 0 && (
-                  <div style={{ display: "flex", flexWrap: "wrap" }}>
-                    <VisuallyHidden>
-                      Choose one of the following questions or type a new one.
-                    </VisuallyHidden>
-                    {followUpQuestions.map((question, index) => (
-                      <FollowUpQuestionButton
-                        onClick={() => handleFollowUpClick(id, question)}
-                        key={id + index}
-                      >
-                        {question}
-                      </FollowUpQuestionButton>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            state.messages.map(({ id, type, text, followUpQuestions }) => {
+              if (type === 'loading') {
+                return <div key={id}>Loading...</div>;
+              }
+
+              return (
+                <div
+                  key={id}
+                  style={{ display: 'flex', flexDirection: 'column' }}
+                >
+                  <Message type={type}>{text}</Message>
+                  {followUpQuestions.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                      <VisuallyHidden>
+                        Choose one of the following questions or type a new one.
+                      </VisuallyHidden>
+                      {followUpQuestions.map((question, index) => (
+                        <FollowUpQuestionButton
+                          onClick={() => handleFollowUpClick(id, question)}
+                          key={id + index}
+                        >
+                          {question}
+                        </FollowUpQuestionButton>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </MessageList>
         <UserInput onMessageEntered={onMessageEntered} />
       </main>
