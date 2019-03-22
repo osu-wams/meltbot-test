@@ -1,8 +1,8 @@
-import { LexRuntime, CognitoIdentityCredentials } from "aws-sdk";
-import generateId from "uuid/v4";
+import { LexRuntime, CognitoIdentityCredentials } from 'aws-sdk';
+import generateId from 'uuid/v4';
 
 let lexRuntime = new LexRuntime({
-  apiVersion: "2016-11-28",
+  apiVersion: '2016-11-28',
   region: process.env.REACT_APP_REGION,
   credentials: new CognitoIdentityCredentials(
     { IdentityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID },
@@ -10,7 +10,7 @@ let lexRuntime = new LexRuntime({
   )
 });
 
-const createMessage = ({ type = "user", text, followUpQuestions = [] }) => ({
+const createMessage = ({ type = 'user', text, followUpQuestions = [] }) => ({
   id: generateId(),
   type,
   text,
