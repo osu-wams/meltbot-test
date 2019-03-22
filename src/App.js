@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import generateId from "uuid/v4";
 import "./App.css";
 import { GlobalStateContext, actions } from "./GlobalContext";
-import lexRuntime from "./lexRuntime";
+import { lexRuntime, createMessage } from "./lexUtils";
 import Header from "./components/Header";
 import Message from "./components/Message";
 import MessageList from "./components/MessageList";
@@ -10,15 +9,7 @@ import UserInput from "./components/UserInput";
 import FollowUpQuestionButton from "./components/FollowUpQuestionButton";
 import VisuallyHidden from "@reach/visually-hidden";
 
-const createMessage = ({ type = "user", text, followUpQuestions = [] }) => ({
-  id: generateId(),
-  type,
-  text,
-  followUpQuestions
-});
-
 const App = () => {
-  console.log(React.useContext(GlobalStateContext));
   const { state, dispatch } = React.useContext(GlobalStateContext);
 
   const addMessage = message => {

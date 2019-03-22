@@ -1,4 +1,5 @@
 import { LexRuntime, CognitoIdentityCredentials } from "aws-sdk";
+import generateId from "uuid/v4";
 
 let lexRuntime = new LexRuntime({
   apiVersion: "2016-11-28",
@@ -9,4 +10,11 @@ let lexRuntime = new LexRuntime({
   )
 });
 
-export default lexRuntime;
+const createMessage = ({ type = "user", text, followUpQuestions = [] }) => ({
+  id: generateId(),
+  type,
+  text,
+  followUpQuestions
+});
+
+export { createMessage, lexRuntime };
