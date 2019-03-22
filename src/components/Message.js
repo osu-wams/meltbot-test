@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '../theme';
+import benny from '../assets/benny.png';
 
 const StyledMessage = styled.div`
   max-width: 80%;
@@ -10,17 +12,29 @@ const StyledMessage = styled.div`
   ${props => {
     if (props.type === 'bot') {
       return `
-    background-color: #ffffff;
-    border-radius: 16px 16px 16px 0;
-    align-self: flex-start;
-  `;
+        background-color: #ffffff;
+        border-radius: 16px 16px 16px 0;
+        position: relative;
+        margin-left: 60px;
+        margin-bottom: 30px;
+        border: 1px solid ${Color['neutral-400']};
+        &:before {
+          content: ' ';
+          background: url(${benny});
+          width: 50px;
+          height: 50px;
+          position: absolute;
+          left: -60px;
+          bottom: -20px;
+        }
+      `;
     }
     if (props.type === 'user') {
       return `
-    border-radius: 16px 16px 0 16px;
-    align-self: flex-end;
-    color: #ffffff;
-  `;
+        align-self: flex-end;
+        border-radius: 16px 16px 0 16px;
+        color: #ffffff;
+      `;
     }
   }}
 `;

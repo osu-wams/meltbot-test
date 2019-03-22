@@ -112,7 +112,6 @@ const App = () => {
               if (type === 'loading') {
                 return <div key={id}>Loading...</div>;
               }
-
               return (
                 <div
                   key={id}
