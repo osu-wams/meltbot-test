@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import './App.css';
 import { GlobalStateContext, actions } from './GlobalContext';
 import { lexRuntime, createMessage } from './lexUtils';
@@ -48,6 +49,14 @@ const App = () => {
         // Remove loading message
         dispatch({ type: actions.REMOVE_LOADING_MESSAGE });
 
+        // Get markdown-formatted message if supplied
+        let markdownMessage;
+        let appContext = JSON.parse(data.sessionAttributes.appContext);
+        if (appContext.altMessages && appContext.altMessages.markdown) {
+          markdownMessage = appContext.altMessages.markdown;
+        }
+
+        // Get follow-up question prompts
         let followUpQuestions = [];
         if (
           data.responseCard &&
@@ -58,11 +67,15 @@ const App = () => {
             e => e.text
           );
         }
+
+        // Construct message from response data
         const botResponse = createMessage({
           type: 'bot',
-          text: data.message,
+          text: markdownMessage ? markdownMessage : data.message,
           followUpQuestions
         });
+
+        // Add response to message list
         addMessage(botResponse);
       })
       .catch(console.log);
@@ -105,7 +118,9 @@ const App = () => {
                   key={id}
                   style={{ display: 'flex', flexDirection: 'column' }}
                 >
-                  <Message type={type}>{text}</Message>
+                  <Message type={type}>
+                    <ReactMarkdown source={text} />
+                  </Message>
                   {followUpQuestions.length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                       <VisuallyHidden>
