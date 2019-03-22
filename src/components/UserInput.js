@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/pro-light-svg-icons';
-import { Color } from '../theme';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/pro-light-svg-icons";
+import { Color } from "../theme";
 
 const Input = styled.input`
   height: 42px;
@@ -12,7 +12,6 @@ const Input = styled.input`
   width: 100%;
   font-size: 18px;
   padding: 0 12px;
-  margin-right: 12px;
 `;
 
 const UserInputWrapper = styled.div`
@@ -25,31 +24,49 @@ const UserInputWrapper = styled.div`
   align-items: center;
 `;
 
+const AskQuestionInput = styled.button`
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+`;
+
 const UserInput = ({ onMessageEntered }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   const handleChange = e => {
     setValue(e.target.value);
   };
 
   const handleKeyDown = e => {
-    if (e.key === 'Enter') {
-      // Fire callback to handle message
-      onMessageEntered(value);
-
-      // Clear input
-      setValue('');
+    if (e.key === "Enter") {
+      dataSend();
     }
+  };
+
+  const dataSend = () => {
+    // Fire callback to handle message
+    onMessageEntered(value);
+
+    // Clear input
+    setValue("");
   };
 
   return (
     <UserInputWrapper>
-      <Input value={value} onChange={handleChange} onKeyDown={handleKeyDown} />
-      <FontAwesomeIcon
-        icon={faArrowRight}
-        size="2x"
-        color={Color['orange-400']}
+      <Input
+        value={value}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        aria-label="Enter a question for Benny"
       />
+      <AskQuestionInput onClick={dataSend} aria-label="Submit your question">
+        <FontAwesomeIcon
+          icon={faArrowRight}
+          size="2x"
+          color={Color["orange-400"]}
+        />
+      </AskQuestionInput>
     </UserInputWrapper>
   );
 };
