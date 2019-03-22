@@ -51,9 +51,11 @@ const App = () => {
 
         // Get markdown-formatted message if supplied
         let markdownMessage;
-        let appContext = JSON.parse(data.sessionAttributes.appContext);
-        if (appContext.altMessages && appContext.altMessages.markdown) {
-          markdownMessage = appContext.altMessages.markdown;
+        if (data.sessionAttributes.appContext) {
+          let appContext = JSON.parse(data.sessionAttributes.appContext);
+          if (appContext.altMessages && appContext.altMessages.markdown) {
+            markdownMessage = appContext.altMessages.markdown;
+          }
         }
 
         // Get follow-up question prompts
@@ -118,7 +120,7 @@ const App = () => {
                   style={{ display: 'flex', flexDirection: 'column' }}
                 >
                   <Message type={type}>
-                    <ReactMarkdown source={text} />
+                    <ReactMarkdown source={text} linkTarget="_blank" />
                   </Message>
                   {followUpQuestions.length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
