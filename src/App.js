@@ -99,12 +99,8 @@ const App = () => {
               if (type === 'loading') {
                 return <div key={id}>Loading...</div>;
               }
-
               return (
-                <div
-                  key={id}
-                  style={{ display: 'flex', flexDirection: 'column' }}
-                >
+                <div key={id}>
                   <Message type={type}>{text}</Message>
                   {followUpQuestions.length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
