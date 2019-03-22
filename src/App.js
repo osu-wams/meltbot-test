@@ -51,7 +51,7 @@ const App = () => {
 
         // Get markdown-formatted message if supplied
         let markdownMessage;
-        if (data.sessionAttributes.appContext) {
+        if (data.sessionAttributes && data.sessionAttributes.appContext) {
           let appContext = JSON.parse(data.sessionAttributes.appContext);
           if (appContext.altMessages && appContext.altMessages.markdown) {
             markdownMessage = appContext.altMessages.markdown;
