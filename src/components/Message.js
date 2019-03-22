@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '../theme';
 import benny from '../assets/benny.png';
 
-const Benny = `
-  
-`;
 const StyledMessage = styled.div`
   max-width: 80%;
   background-color: #d73f09;
@@ -19,6 +17,7 @@ const StyledMessage = styled.div`
     position: relative;
     margin-left: 60px;
     margin-bottom: 30px;
+    border: 1px solid ${Color['neutral-400']};
     &:before {
       content: ' ';
       background: url(${benny});
