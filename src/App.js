@@ -1,66 +1,16 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useRef,
-  useContext
-} from 'react';
-import { LexRuntime, CognitoIdentityCredentials } from 'aws-sdk';
-import styled from 'styled-components';
-import generateId from 'uuid/v4';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/pro-light-svg-icons';
-import './App.css';
-import Header from './components/Header';
-import Message from './components/Message';
-import UserInput from './components/UserInput';
-import UserInputWrapper from './components/UserInputWrapper';
-import VisuallyHidden from '@reach/visually-hidden';
-import { Color } from './theme';
+import React, { useEffect } from "react";
+import generateId from "uuid/v4";
+import "./App.css";
+import { GlobalStateContext, actions } from "./GlobalContext";
+import lexRuntime from "./lexRuntime";
+import Header from "./components/Header";
+import Message from "./components/Message";
+import MessageList from "./components/MessageList";
+import UserInput from "./components/UserInput";
+import FollowUpQuestionButton from "./components/FollowUpQuestionButton";
+import VisuallyHidden from "@reach/visually-hidden";
 
-var lexRuntime = new LexRuntime({
-  apiVersion: '2016-11-28',
-  region: process.env.REACT_APP_REGION,
-  credentials: new CognitoIdentityCredentials(
-    { IdentityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID },
-    { region: process.env.REACT_APP_REGION }
-  )
-});
-
-// Initialize global state
-const initialState = {
-  messages: []
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case actions.ADD_MESSAGE:
-      return { messages: [...state.messages, action.message] };
-
-    case actions.REMOVE_FOLLOW_UP_QUESTIONS:
-      let messages = state.messages;
-      let targetMessage = messages.find(e => e.id === action.messageId);
-      if (targetMessage) {
-        let targetMessageIndex = messages.indexOf(targetMessage);
-        messages[targetMessageIndex].followUpQuestions = [];
-        return { messages };
-      } else {
-        return state;
-      }
-
-    default:
-      throw new Error('AAAAAAAAAA');
-  }
-};
-
-const actions = {
-  ADD_MESSAGE: 'ADD_MESSAGE',
-  REMOVE_FOLLOW_UP_QUESTIONS: 'REMOVE_FOLLOW_UP_QUESTIONS'
-};
-
-const GlobalStateContext = React.createContext(null);
-
-const createMessage = ({ type = 'user', text, followUpQuestions = [] }) => ({
+const createMessage = ({ type = "user", text, followUpQuestions = [] }) => ({
   id: generateId(),
   type,
   text,
@@ -68,8 +18,8 @@ const createMessage = ({ type = 'user', text, followUpQuestions = [] }) => ({
 });
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [userMessage, setUserMessage] = useState('');
+  console.log(React.useContext(GlobalStateContext));
+  const { state, dispatch } = React.useContext(GlobalStateContext);
 
   const addMessage = message => {
     dispatch({ type: actions.ADD_MESSAGE, message });
@@ -84,14 +34,11 @@ const App = () => {
     const message = createMessage({ text: messageText });
     addMessage(message);
 
-    // Clear input
-    setUserMessage('');
-
     // Post user message to Lex
     lexRuntime
       .postText({
-        botName: 'QnABot_BotwR',
-        botAlias: '$LATEST',
+        botName: process.env.REACT_APP_BOT_NAME,
+        botAlias: "$LATEST",
         userId: `lex-web-ui-${Math.floor((1 + Math.random()) * 0x10000)
           .toString(16)
           .substring(1)}`,
@@ -110,7 +57,7 @@ const App = () => {
           );
         }
         const botResponse = createMessage({
-          type: 'bot',
+          type: "bot",
           text: data.message,
           followUpQuestions
         });
@@ -119,22 +66,16 @@ const App = () => {
       .catch(console.log);
   };
 
-  const handleKeyDown = e => {
-    if (e.key === 'Enter') {
-      // Remove most recent follow-up messages if any exist
-      if (state.messages.length) {
-        removeFollowUpQuestionsFromMessage(
-          state.messages[state.messages.length - 1].id
-        );
-      }
-
-      // Send user message
-      postMessage(userMessage);
+  const onMessageEntered = userMessage => {
+    // Remove most recent follow-up messages if any exist
+    if (state.messages.length) {
+      removeFollowUpQuestionsFromMessage(
+        state.messages[state.messages.length - 1].id
+      );
     }
-  };
 
-  const handleChange = e => {
-    setUserMessage(e.target.value);
+    // Send user message
+    postMessage(userMessage);
   };
 
   const handleFollowUpClick = (messageId, followUpQuestion) => {
@@ -143,106 +84,43 @@ const App = () => {
   };
 
   useEffect(() => {
-    postMessage('How do I pay my ATD?');
+    postMessage("How do I pay my ATD?");
   }, []);
 
   return (
     <div className="App">
-      <GlobalStateContext.Provider value={state}>
-        <Header />
-        <main>
-          <MessageList role="log">
-            {state.messages.length > 0 &&
-              state.messages.map(({ id, type, text, followUpQuestions }) => (
-                <div
-                  key={id}
-                  style={{ display: 'flex', flexDirection: 'column' }}
-                >
-                  <Message type={type}>{text}</Message>
-                  {followUpQuestions.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                      <VisuallyHidden>
-                        Choose one of the following questions or type a new one?
-                      </VisuallyHidden>
-                      {console.log(followUpQuestions)}
-                      {followUpQuestions.map((question, index) => (
-                        <FollowUpQuestionButton
-                          onClick={() => handleFollowUpClick(id, question)}
-                          key={id + index}
-                          tabIndex={index + 1}
-                        >
-                          {question}
-                        </FollowUpQuestionButton>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-          </MessageList>
-          <UserInputWrapper>
-            <UserInput
-              type="text"
-              onKeyDown={handleKeyDown}
-              value={userMessage}
-              onChange={handleChange}
-              placeholder="Ask a question"
-            />
-            <FontAwesomeIcon
-              icon={faArrowRight}
-              size="2x"
-              color={Color['orange-400']}
-            />
-          </UserInputWrapper>
-        </main>
-      </GlobalStateContext.Provider>
+      <Header />
+      <main>
+        <MessageList role="log">
+          {state.messages.length > 0 &&
+            state.messages.map(({ id, type, text, followUpQuestions }) => (
+              <div
+                key={id}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <Message type={type}>{text}</Message>
+                {followUpQuestions.length > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap" }}>
+                    <VisuallyHidden>
+                      Choose one of the following questions or type a new one.
+                    </VisuallyHidden>
+                    {followUpQuestions.map((question, index) => (
+                      <FollowUpQuestionButton
+                        onClick={() => handleFollowUpClick(id, question)}
+                        key={id + index}
+                      >
+                        {question}
+                      </FollowUpQuestionButton>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+        </MessageList>
+        <UserInput onMessageEntered={onMessageEntered} />
+      </main>
     </div>
   );
 };
-
-const FollowUpQuestionButton = styled.button`
-  outline: none;
-  border: none;
-  padding: 8px 12px;
-  color: #ffffff;
-  background-color: ${Color['orange-400']};
-  border-radius: 99px;
-  cursor: pointer;
-  &:not(:last-child) {
-    margin-right: 16px;
-  }
-  margin-bottom: 12px;
-  &:hover,
-  &:active,
-  &:focus {
-    background-color: ${Color['neutral-600']};
-  }
-`;
-
-const MessageList = ({ ...props }) => {
-  const state = useContext(GlobalStateContext);
-  const messageListEl = useRef(null);
-
-  // Scroll to bottom when new messages are added
-  useEffect(() => {
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        const chat = messageListEl.current;
-        chat.scrollTo({ left: 0, top: chat.scrollHeight, behavior: 'smooth' });
-      });
-    });
-  }, [state.messages]);
-
-  return <MessageListWrapper ref={messageListEl} {...props} />;
-};
-
-const MessageListWrapper = styled.div`
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* height: 100%; */
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 76px - 66px);
-`;
 
 export default App;
