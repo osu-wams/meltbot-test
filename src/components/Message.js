@@ -9,6 +9,17 @@ const StyledMessage = styled.div`
   border-radius: 20px;
   padding: 16px;
   margin-bottom: 12px;
+
+  & > :first-child {
+    margin-top: 0;
+  }
+  & > :last-child {
+    margin-bottom: 0;
+  }
+  & > :only-child {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
   ${props => {
     if (props.type === 'bot') {
       return `
