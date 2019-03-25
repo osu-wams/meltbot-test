@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/pro-light-svg-icons';
-import { Color } from '../theme';
+import { Color, fontSize } from '../theme';
 
 const Input = styled.input`
   height: 42px;
@@ -10,7 +10,7 @@ const Input = styled.input`
   border: 1px solid #ddd;
   box-shadow: none;
   width: 100%;
-  font-size: 18px;
+  font-size: ${fontSize[18]};
   padding: 0 12px;
 `;
 

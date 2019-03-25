@@ -119,21 +119,29 @@ const App = () => {
             state.messages.map(({ id, type, text, followUpQuestions }) => {
               if (type === 'loading') {
                 return (
-                  <div key={id}>
+                  <Message type="bot" key={id}>
                     <Loader />
-                  </div>
+                  </Message>
                 );
               }
               return (
                 <div
                   key={id}
-                  style={{ display: 'flex', flexDirection: 'column' }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
                 >
                   <Message type={type}>
                     <ReactMarkdown source={text} linkTarget="_blank" />
                   </Message>
                   {followUpQuestions.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap'
+                      }}
+                    >
                       <VisuallyHidden>
                         Choose one of the following questions or type a new one.
                       </VisuallyHidden>
