@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import queryString from 'query-string';
 import './App.css';
 import { GlobalStateContext, actions } from './GlobalContext';
 import { lexRuntime, createMessage } from './lexUtils';
@@ -101,7 +102,11 @@ const App = () => {
   };
 
   useEffect(() => {
-    postMessage('How do I pay my ATD?');
+    // Post seed (initial) question if provided in query params
+    const params = queryString.parse(window.location.search);
+    if (params.seed) {
+      postMessage(params.seed);
+    }
   }, []);
 
   return (
