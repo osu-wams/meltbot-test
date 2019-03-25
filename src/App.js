@@ -10,6 +10,7 @@ import MessageList from './components/MessageList';
 import UserInput from './components/UserInput';
 import FollowUpQuestionButton from './components/FollowUpQuestionButton';
 import VisuallyHidden from '@reach/visually-hidden';
+import Loader from './components/Loader';
 
 const App = () => {
   const { state, dispatch } = React.useContext(GlobalStateContext);
@@ -117,7 +118,11 @@ const App = () => {
           {state.messages.length > 0 &&
             state.messages.map(({ id, type, text, followUpQuestions }) => {
               if (type === 'loading') {
-                return <div key={id}>Loading...</div>;
+                return (
+                  <div key={id}>
+                    <Loader />
+                  </div>
+                );
               }
               return (
                 <div
