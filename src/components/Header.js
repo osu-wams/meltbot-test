@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faQuestionCircle } from '@fortawesome/pro-light-svg-icons';
-import logo from '../assets/logo.png';
 import VisuallyHidden from '@reach/visually-hidden';
+import '@reach/dialog/styles.css';
+import logo from '../assets/logo.png';
+import IconButton from './IconButton';
 import { Color } from '../theme';
+import MyDialog, { CloseButton } from './MyDialog';
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -25,6 +28,8 @@ const Logo = styled.img`
 `;
 
 const Header = () => {
+  const [isOpen, setOpen] = useState(false);
+
   return (
     <HeaderWrapper>
       <Logo src={logo} alt="Oregon State University" />
@@ -41,12 +46,34 @@ const Header = () => {
           />
           <VisuallyHidden>Search Oregon State University</VisuallyHidden>
         </a>
-        <FontAwesomeIcon
-          icon={faQuestionCircle}
-          size="2x"
-          color={Color['neutral-600']}
-        />
+        <IconButton onClick={() => setOpen(!isOpen)}>
+          <FontAwesomeIcon
+            icon={faQuestionCircle}
+            size="2x"
+            color={Color['neutral-600']}
+          />
+        </IconButton>
       </div>
+      <MyDialog isOpen={isOpen}>
+        <CloseButton onClick={() => setOpen(!isOpen)} />
+        <h2>Hi, I’m Benny! </h2>
+        <p>
+          I am here to help answer questions for first-year students starting at
+          OSU (Corvallis campus) Fall 2019. How can I help?
+        </p>
+        <ul>
+          <li>Advance Tuition Deposit</li>
+          <li>ONID</li>
+          <li>Scholarships</li>
+          <li>Financial Aid</li>
+          <li>Housing</li>
+          <li>Immunization requirements</li>
+          <li>START (orientation)</li>
+          <li>Campus visits</li>
+          <li>Welcome Week</li>
+          <li>Contact information</li>
+        </ul>
+      </MyDialog>
     </HeaderWrapper>
   );
 };
