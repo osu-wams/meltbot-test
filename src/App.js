@@ -143,12 +143,13 @@ const App = () => {
                       }}
                     >
                       <VisuallyHidden>
-                        Choose one of the following questions or type a new one.
+                        Suggested followup questions:
                       </VisuallyHidden>
                       {followUpQuestions.map((question, index) => (
                         <FollowUpQuestionButton
                           onClick={() => handleFollowUpClick(id, question)}
                           key={id + index}
+                          tabIndex="10"
                         >
                           {question}
                         </FollowUpQuestionButton>

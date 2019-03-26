@@ -9,7 +9,6 @@ const MessageListWrapper = styled.div`
   padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   height: calc(100vh - 76px - 66px);
 `;
 
