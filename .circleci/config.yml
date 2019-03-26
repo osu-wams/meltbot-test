@@ -82,7 +82,7 @@ jobs:
           at: ~/
 
       - aws-s3/sync:
-          from: ~/project/client/build
+          from: ~/project/build
           to: 's3://chatbot-enrollment'
 
 workflows:
