@@ -40,7 +40,7 @@ const App = () => {
     lexRuntime
       .postText({
         botName: process.env.REACT_APP_BOT_NAME,
-        botAlias: '$LATEST',
+        botAlias: process.env.REACT_APP_BOT_ALIAS,
         userId: `lex-web-ui-${Math.floor((1 + Math.random()) * 0x10000)
           .toString(16)
           .substring(1)}`,
