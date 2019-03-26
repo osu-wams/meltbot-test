@@ -46,7 +46,7 @@ const Header = () => {
           />
           <VisuallyHidden>Search Oregon State University</VisuallyHidden>
         </a>
-        <IconButton onClick={() => setOpen(!isOpen)}>
+        <IconButton aria-label="About Benny" onClick={() => setOpen(!isOpen)}>
           <FontAwesomeIcon
             icon={faQuestionCircle}
             size="2x"
