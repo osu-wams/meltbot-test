@@ -10,9 +10,13 @@ body {
   font-size: 1.6rem;
   font-family: 'Open Sans', sans-serif;
 }
+/* Height Fix for iOS devices */
+.App {
+  height: calc(100vh - 190px);
+}
 
 main {
-  height: calc(100vh - 76px);
+  height: 100%;
 }
 
 @media (min-width: 768px) {

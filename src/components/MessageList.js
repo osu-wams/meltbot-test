@@ -5,11 +5,10 @@ import { GlobalStateContext } from '../GlobalContext';
 const MessageListWrapper = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
-  /* height: 100%; */
   padding: 16px;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 76px - 66px);
+  height: 100%;
 `;
 
 const MessageList = ({ ...props }) => {
