@@ -32,7 +32,11 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
-      <Logo src={logo} alt="Oregon State University" />
+      <a 
+        href="https://oregonstate.edu" 
+        rel="noopener noreferrrer">
+          <Logo src={logo} alt="Oregon State University" />
+      </a>
       <div>
         <a
           href="https://search.oregonstate.edu"
@@ -46,7 +50,11 @@ const Header = () => {
           />
           <VisuallyHidden>Search Oregon State University</VisuallyHidden>
         </a>
-        <IconButton aria-label="About Benny" onClick={() => setOpen(!isOpen)}>
+        <IconButton
+          data-testid="about-benny"
+          aria-label="About Benny"
+          onClick={() => setOpen(!isOpen)}
+        >
           <FontAwesomeIcon
             icon={faQuestionCircle}
             size="2x"
@@ -55,7 +63,7 @@ const Header = () => {
         </IconButton>
       </div>
       <MyDialog isOpen={isOpen}>
-        <CloseButton onClick={() => setOpen(!isOpen)} />
+        <CloseButton  data-testid="close-about" onClick={() => setOpen(!isOpen)} />
         <h2>Hi, I’m Benny! </h2>
         <p>
           I am here to help answer questions for first-year students starting at
