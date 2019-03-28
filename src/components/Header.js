@@ -32,10 +32,8 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
-      <a 
-        href="https://oregonstate.edu" 
-        rel="noopener noreferrrer">
-          <Logo src={logo} alt="Oregon State University" />
+      <a href="https://oregonstate.edu" rel="noopener noreferrrer">
+        <Logo src={logo} alt="Oregon State University" />
       </a>
       <div>
         <a
@@ -63,8 +61,12 @@ const Header = () => {
         </IconButton>
       </div>
       <MyDialog isOpen={isOpen}>
-        <CloseButton  data-testid="close-about" onClick={() => setOpen(!isOpen)} />
-        <h2>Hi, I’m Benny! </h2>
+        <CloseButton
+          data-testid="close-about"
+          onClick={() => setOpen(!isOpen)}
+        />
+
+        <h2>Hi, I’m Benny!</h2>
         <p>
           I am here to help answer questions for first-year students starting at
           OSU (Corvallis campus) Fall 2019. How can I help?

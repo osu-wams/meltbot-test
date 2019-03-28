@@ -2,30 +2,41 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog } from '@reach/dialog';
-import { faTimes } from '@fortawesome/pro-light-svg-icons';
+import { faTimesCircle } from '@fortawesome/pro-light-svg-icons';
+import benny from '../assets/benny.png';
 import VisuallyHidden from '@reach/visually-hidden';
 import { fontSize, Color } from '../theme';
 import IconButton from './IconButton';
 
 const CloseButton = ({ ...props }) => (
   <IconButton type="cancel" {...props}>
-    <FontAwesomeIcon icon={faTimes} size="2x" />
+    <FontAwesomeIcon
+      icon={faTimesCircle}
+      size="2x"
+      color={Color['neutral-500']}
+    />
     <VisuallyHidden>Close</VisuallyHidden>
   </IconButton>
 );
 
 const MyDialog = styled(Dialog)`
-  border-radius: 4px;
+  border-radius: 8px;
   [type='cancel'] {
     float: right;
-    margin-right: -2rem;
+    margin-right: -1rem;
+    font-size: 2rem;
   }
   h2 {
     color: ${Color['orange-400']};
+    display: flex;
+    align-items: center;
+    height: 5rem;
     font-size: ${fontSize[24]};
     font-weight: 500;
     margin-bottom: 0;
-    margin-top: 0.5rem;
+    margin-top: 0;
+    padding-left: 60px;
+    background: url(${benny}) center left no-repeat;
   }
   h3 {
     font-size: ${fontSize[16]};
@@ -46,6 +57,9 @@ const MyDialog = styled(Dialog)`
     }
   }
   @media (min-width: 768px) {
+    [type='cancel'] {
+      margin-top: -1rem;
+    }
     &[data-reach-dialog-content] {
       width: 60vw;
       max-width: 768px;

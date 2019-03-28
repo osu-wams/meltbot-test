@@ -6,9 +6,9 @@ import { Color, fontSize } from '../theme';
 import { GlobalStateContext } from '../GlobalState';
 
 const Input = styled.input`
-  height: 42px;
+  height: 5.2rem;
   border-radius: 6px;
-  border: 1px solid #ddd;
+  border: 1px solid ${Color['neutral-300']};
   box-shadow: none;
   width: 100%;
   font-size: ${fontSize[18]};
@@ -74,7 +74,7 @@ const UserInput = () => {
       >
         <FontAwesomeIcon
           icon={faArrowRight}
-          size="2x"
+          size="3x"
           color={Color['orange-400']}
         />
       </AskQuestionInput>
