@@ -59,14 +59,19 @@ const UserInput = () => {
   };
 
   return (
-    <UserInputWrapper>
+    <UserInputWrapper data-testid="UserInput">
       <Input
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         aria-label="Enter a question for Benny"
+        data-testid="UserInput-input"
       />
-      <AskQuestionInput onClick={sendMessage} aria-label="Submit your question">
+      <AskQuestionInput
+        onClick={sendMessage}
+        aria-label="Submit your question"
+        data-testid="UserInput-sendbutton"
+      >
         <FontAwesomeIcon
           icon={faArrowRight}
           size="2x"
