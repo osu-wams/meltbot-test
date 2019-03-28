@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/pro-light-svg-icons';
 import { Color, fontSize } from '../theme';
+import { GlobalStateContext } from '../GlobalState';
 
 const Input = styled.input`
   height: 42px;
@@ -31,8 +32,11 @@ const AskQuestionInput = styled.button`
   padding: 0.6rem 1rem;
 `;
 
-const UserInput = ({ onMessageEntered }) => {
+const UserInput = () => {
   const [value, setValue] = useState('');
+  const {
+    actions: { postMessage }
+  } = useContext(GlobalStateContext);
 
   const handleChange = e => {
     setValue(e.target.value);
@@ -46,8 +50,8 @@ const UserInput = ({ onMessageEntered }) => {
 
   const sendMessage = () => {
     if (value) {
-      // Fire callback to handle message
-      onMessageEntered(value);
+      // Send user message
+      postMessage(value);
 
       // Clear input
       setValue('');
