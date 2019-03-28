@@ -51,7 +51,7 @@ const StyledMessage = styled.div`
 `;
 
 const Message = ({ type, ...props }) => {
-  return <StyledMessage type={type} {...props} />;
+  return <StyledMessage type={type} {...props} data-testid="message" />;
 };
 
 export default Message;

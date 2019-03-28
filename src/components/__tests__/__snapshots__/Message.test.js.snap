@@ -41,6 +41,7 @@ exports[`BotMessage - Message with type="bot" is styled appropriately 1`] = `
 <div>
   <div
     class="c0"
+    data-testid="message"
     type="bot"
   >
     <p>
@@ -75,6 +76,7 @@ exports[`FollowUpQuestion - Message with no type - is styled appropriately 1`] =
 <div>
   <div
     class="c0"
+    data-testid="message"
   >
     <p>
       Follow up question button
@@ -113,6 +115,7 @@ exports[`UserMessage - Message with type="user" is styled appropriately 1`] = `
 <div>
   <div
     class="c0"
+    data-testid="message"
     type="user"
   >
     <p>

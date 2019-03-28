@@ -45,7 +45,11 @@ const MessageList = ({ ...props }) => {
   };
 
   return (
-    <MessageListWrapper ref={messageListEl} {...props}>
+    <MessageListWrapper
+      ref={messageListEl}
+      {...props}
+      data-testid="MessageList"
+    >
       {state.messages.length > 0 &&
         state.messages.map(({ id, type, text, followUpQuestions }) => {
           if (type === 'loading') {
