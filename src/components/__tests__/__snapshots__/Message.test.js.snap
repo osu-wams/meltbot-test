@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BotMessage - Message with type="bot" is styled appropriately 1`] = `
+.c0 {
+  max-width: 80%;
+  background-color: #d73f09;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background-color: #ffffff;
+  border-radius: 16px 16px 16px 0;
+  position: relative;
+  margin-left: 60px;
+  margin-bottom: 30px;
+  border: 1px solid #B7B1AF;
+}
+
+.c0 > :first-child {
+  margin-top: 0;
+}
+
+.c0 > :last-child {
+  margin-bottom: 0;
+}
+
+.c0 > :only-child {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.c0:before {
+  content: ' ';
+  background: url(benny.png);
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: -60px;
+  bottom: -20px;
+}
+
+<div>
+  <div
+    class="c0"
+    type="bot"
+  >
+    <p>
+      Bot Message
+    </p>
+  </div>
+</div>
+`;
+
+exports[`FollowUpQuestion - Message with no type - is styled appropriately 1`] = `
+.c0 {
+  max-width: 80%;
+  background-color: #d73f09;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.c0 > :first-child {
+  margin-top: 0;
+}
+
+.c0 > :last-child {
+  margin-bottom: 0;
+}
+
+.c0 > :only-child {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <p>
+      Follow up question button
+    </p>
+  </div>
+</div>
+`;
+
+exports[`UserMessage - Message with type="user" is styled appropriately 1`] = `
+.c0 {
+  max-width: 80%;
+  background-color: #d73f09;
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 12px;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+  border-radius: 16px 16px 0 16px;
+  color: #ffffff;
+}
+
+.c0 > :first-child {
+  margin-top: 0;
+}
+
+.c0 > :last-child {
+  margin-bottom: 0;
+}
+
+.c0 > :only-child {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+<div>
+  <div
+    class="c0"
+    type="user"
+  >
+    <p>
+      User Message
+    </p>
+  </div>
+</div>
+`;
