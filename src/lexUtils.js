@@ -10,7 +10,11 @@ let lexRuntime = new LexRuntime({
   )
 });
 
-const createMessage = ({ type = 'user', text, followUpQuestions = [] }) => ({
+const createMessage = ({
+  type = 'user',
+  text = '',
+  followUpQuestions = []
+} = {}) => ({
   id: generateId(),
   type,
   text,

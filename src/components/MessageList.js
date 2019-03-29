@@ -83,6 +83,7 @@ const MessageList = ({ ...props }) => {
                       onClick={() => handleFollowUpClick(question)}
                       key={id + index}
                       tabIndex="10"
+                      data-testid="followup-button"
                     >
                       {question}
                     </FollowUpQuestionButton>
