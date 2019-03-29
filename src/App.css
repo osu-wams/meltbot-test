@@ -5,18 +5,32 @@ html {
   background: #f2f2f2;
   font-size: 62.5%;
 }
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
 
 body {
   font-size: 1.6rem;
   font-family: 'Open Sans', sans-serif;
 }
-/* Height Fix for iOS devices */
-.App {
-  height: calc(100vh - 190px);
+
+#root {
+  height: 100%;
 }
 
-main {
+/* Height Fix for iOS devices */
+.App {
   height: 100%;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'header'
+    'log'
+    'question';
+  grid-template-rows: 7.6rem 1fr 80px;
 }
 
 @media (min-width: 768px) {

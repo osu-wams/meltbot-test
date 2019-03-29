@@ -4,6 +4,7 @@ import { Color } from '../theme';
 import benny from '../assets/benny.png';
 
 const StyledMessage = styled.div`
+  display: inline-block;
   max-width: 80%;
   background-color: #d73f09;
   border-radius: 20px;
@@ -42,7 +43,7 @@ const StyledMessage = styled.div`
     }
     if (props.type === 'user') {
       return `
-        align-self: flex-end;
+        right: 0;
         border-radius: 16px 16px 0 16px;
         color: #ffffff;
       `;

@@ -22,10 +22,8 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <main>
-        <MessageList role="log" />
-        <UserInput />
-      </main>
+      <MessageList role="log" />
+      <UserInput />
     </div>
   );
 };

@@ -10,13 +10,15 @@ import { Color } from '../theme';
 import MyDialog, { CloseButton } from './MyDialog';
 
 const HeaderWrapper = styled.div`
+  grid-area: header;
+  border-bottom: 1px solid ${Color['neutral-200']};
   display: flex;
   width: 100%;
-  height: 76px;
   background-color: #fff;
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
+  z-index: 1;
   a + svg {
     margin-left: 12px;
   }

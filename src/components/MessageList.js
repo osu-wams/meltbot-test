@@ -8,12 +8,13 @@ import Loader from './Loader';
 import FollowUpQuestionButton from './FollowUpQuestionButton';
 
 const MessageListWrapper = styled.div`
-  overflow-y: auto;
+  grid-area: log;
+  overflow-y: scroll;
   overflow-x: hidden;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  padding: 1.6rem 1.6rem 0;
+  .user {
+    text-align: right;
+  }
 `;
 
 const MessageList = ({ ...props }) => {
@@ -60,13 +61,7 @@ const MessageList = ({ ...props }) => {
             );
           }
           return (
-            <div
-              key={id}
-              style={{
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
+            <div key={id} className={type === 'user' ? 'user' : ''}>
               <Message type={type}>
                 <ReactMarkdown source={text} linkTarget="_blank" />
               </Message>

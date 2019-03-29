@@ -16,9 +16,9 @@ const Input = styled.input`
 `;
 
 const UserInputWrapper = styled.div`
+  border-top: 1px solid ${Color['neutral-300']};
+  grid-area: question;
   display: flex;
-  position: sticky;
-  bottom: 0;
   padding: 12px;
   width: 100%;
   justify-content: center;
