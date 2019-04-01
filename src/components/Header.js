@@ -7,7 +7,7 @@ import '@reach/dialog/styles.css';
 import logo from '../assets/logo.png';
 import IconButton from './IconButton';
 import { Color } from '../theme';
-import MyDialog, { CloseButton } from './MyDialog';
+import { Dialog, CloseButton } from './Dialog';
 import { GlobalStateContext } from '../GlobalState';
 
 const HeaderWrapper = styled.div`
@@ -97,7 +97,7 @@ const Header = () => {
           />
         </IconButton>
       </div>
-      <MyDialog isOpen={isOpen}>
+      <Dialog isOpen={isOpen}>
         <CloseButton
           data-testid="close-about"
           onClick={() => setOpen(!isOpen)}
@@ -119,7 +119,7 @@ const Header = () => {
             </li>
           ))}
         </ul>
-      </MyDialog>
+      </Dialog>
     </HeaderWrapper>
   );
 };
