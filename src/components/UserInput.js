@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/pro-light-svg-icons';
-import { Color, fontSize } from '../theme';
+import { Color, fontSize, breakpoints } from '../theme';
 import { GlobalStateContext } from '../GlobalState';
 
 const Input = styled.input`
@@ -23,6 +23,10 @@ const UserInputWrapper = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+  @media (min-width: ${breakpoints[768]}) {
+    margin: 0 auto;
+    max-width: 768px;
+  }
 `;
 
 const AskQuestionInput = styled.button`

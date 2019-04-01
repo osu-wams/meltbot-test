@@ -32,10 +32,3 @@ body {
     'question';
   grid-template-rows: 7.6rem 1fr 80px;
 }
-
-@media (min-width: 768px) {
-  main {
-    margin: 0 auto;
-    max-width: 768px;
-  }
-}

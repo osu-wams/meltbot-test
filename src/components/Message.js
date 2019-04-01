@@ -39,6 +39,9 @@ const StyledMessage = styled.div`
           left: -60px;
           bottom: -20px;
         }
+        a {
+          color: ${Color['orange-400']}
+        }
       `;
     }
     if (props.type === 'user') {
