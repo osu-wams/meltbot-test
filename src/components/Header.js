@@ -39,8 +39,7 @@ const modalQuestions = [
   'Immunization requirements',
   'START (orientation)',
   'Campus visits',
-  'Welcome Week',
-  'Contact information'
+  'Welcome Week'
 ];
 
 const QuestionButton = styled.button`
