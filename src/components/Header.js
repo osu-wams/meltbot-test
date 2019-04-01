@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faQuestionCircle } from '@fortawesome/pro-light-svg-icons';
@@ -8,6 +8,7 @@ import logo from '../assets/logo.png';
 import IconButton from './IconButton';
 import { Color } from '../theme';
 import MyDialog, { CloseButton } from './MyDialog';
+import { GlobalStateContext } from '../GlobalState';
 
 const HeaderWrapper = styled.div`
   grid-area: header;
@@ -29,8 +30,42 @@ const Logo = styled.img`
   width: 140px;
 `;
 
+const modalQuestions = [
+  'Advance Tuition Deposit',
+  'ONID',
+  'Scholarships',
+  'Financial Aid',
+  'Housing',
+  'Immunization requirements',
+  'START (orientation)',
+  'Campus visits',
+  'Welcome Week',
+  'Contact information'
+];
+
+const QuestionButton = styled.button`
+  outline: none;
+  background: none;
+  border: none;
+  color: #069;
+  text-decoration: underline;
+  cursor: pointer;
+  &:focus {
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+`;
+
 const Header = () => {
   const [isOpen, setOpen] = useState(false);
+  const {
+    actions: { postMessage }
+  } = useContext(GlobalStateContext);
+
+  const handleDialogQuestionClicked = question => {
+    postMessage(question);
+    setOpen(false);
+  };
 
   return (
     <HeaderWrapper>
@@ -74,16 +109,15 @@ const Header = () => {
           OSU (Corvallis campus) Fall 2019. How can I help?
         </p>
         <ul>
-          <li>Advance Tuition Deposit</li>
-          <li>ONID</li>
-          <li>Scholarships</li>
-          <li>Financial Aid</li>
-          <li>Housing</li>
-          <li>Immunization requirements</li>
-          <li>START (orientation)</li>
-          <li>Campus visits</li>
-          <li>Welcome Week</li>
-          <li>Contact information</li>
+          {modalQuestions.map((question, index) => (
+            <li key={index}>
+              <QuestionButton
+                onClick={() => handleDialogQuestionClicked(question)}
+              >
+                {question}
+              </QuestionButton>
+            </li>
+          ))}
         </ul>
       </MyDialog>
     </HeaderWrapper>

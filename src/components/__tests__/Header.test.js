@@ -5,15 +5,19 @@ import {
   fireEvent,
   waitForElement
 } from 'react-testing-library';
-
+import { GlobalStateProvider } from '../../GlobalState';
 import Header from '../Header';
 
+const renderWithGlobalState = el => {
+  return render(<GlobalStateProvider>{el}</GlobalStateProvider>);
+};
+
 test('Renders without errors', () => {
-  render(<Header />);
+  renderWithGlobalState(<Header />);
 });
 
 test('Modal will open and close when appropriate buttons are clicked', async () => {
-  const { getByText, getByTestId } = render(<Header />);
+  const { getByText, getByTestId } = renderWithGlobalState(<Header />);
 
   // Click on question icon
   const openBtn = getByTestId('about-benny');
