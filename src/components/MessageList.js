@@ -13,6 +13,7 @@ const MessageListWrapper = styled.main`
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 1.6rem 1.6rem 0;
+  width: 100%;
   .user {
     text-align: right;
   }
