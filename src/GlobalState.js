@@ -5,7 +5,9 @@ const actionType = {
   ADD_MESSAGE: 'ADD_MESSAGE',
   REMOVE_FOLLOW_UP_QUESTIONS: 'REMOVE_FOLLOW_UP_QUESTIONS',
   LOADING_START: 'LOADING_START',
-  LOADING_DONE: 'LOADING_DONE'
+  LOADING_DONE: 'LOADING_DONE',
+  INCREMENT_FAILED_SEARCH_COUNT: 'INCREMENT_FAILED_SEARCH_COUNT',
+  RESET_FAILED_SEARCH_COUNT: 'RESET_FAILED_SEARCH_COUNT'
 };
 
 const reducer = (state, action) => {
@@ -42,6 +44,12 @@ const reducer = (state, action) => {
       messages.splice(messages.indexOf(targetMessage), 1);
       return { ...state, messages };
 
+    case actionType.INCREMENT_FAILED_SEARCH_COUNT:
+      return { ...state, failedSearchCount: state.failedSearchCount + 1 };
+
+    case actionType.RESET_FAILED_SEARCH_COUNT:
+      return { ...state, failedSearchCount: 0 };
+
     default:
       console.error('Invalid action type.');
       return state;
@@ -49,6 +57,7 @@ const reducer = (state, action) => {
 };
 
 const initialState = {
+  failedSearchCount: 0,
   messages: []
 };
 
@@ -76,14 +85,47 @@ const GlobalStateProvider = ({ ...props }) => {
 
         // Send message and get response from Lex
         const responseMessage = await postMessageToLex(messageText);
-        console.log();
 
         // Clear loading state
         dispatch({ type: actionType.LOADING_DONE });
 
+        // Check if response contains an error message
+        const responseContainsErrorMessage = responseMessage.text.match(
+          /sorry, i did/i
+        );
+
+        if (responseContainsErrorMessage && state.failedSearchCount >= 2) {
+          // Offer a mailto link with a chat log for additional help if multiple searches in a row have failed to return results
+          let chatLog = state.messages
+            .map(
+              ({ type, text }) =>
+                `${type === 'bot' ? 'Benny:' : 'User:'} ${text}`
+            )
+            .join('\n\n');
+
+          const mailtoSubject = encodeURIComponent('Help with Benny');
+          const mailtoBody = encodeURIComponent(chatLog);
+          const mailtoLink = `mailto:admissions@oregonstate.edu?subject=${mailtoSubject}&body=${mailtoBody}`;
+
+          const testMessage = createMessage({
+            text: `It looks like I might not be getting you the answers you're looking for. You can contact [Admissions](${mailtoLink}) for more assistance.`,
+            type: 'bot'
+          });
+
+          dispatch({ type: actionType.ADD_MESSAGE, message: testMessage });
+          return;
+        } else if (responseContainsErrorMessage) {
+          // Increment failed search count if error message returned
+          dispatch({ type: actionType.INCREMENT_FAILED_SEARCH_COUNT });
+        } else {
+          // Reset failed search count on successful search
+          dispatch({ type: actionType.RESET_FAILED_SEARCH_COUNT });
+        }
+
         // Add returned message to message list
         dispatch({ type: actionType.ADD_MESSAGE, message: responseMessage });
       } catch (err) {
+        console.log(err);
         // Clear loading state
         dispatch({ type: actionType.LOADING_DONE });
 
@@ -94,6 +136,9 @@ const GlobalStateProvider = ({ ...props }) => {
         });
         dispatch({ type: actionType.ADD_MESSAGE, message: errorMessage });
       }
+    },
+    addBotMessage(message) {
+      dispatch({ type: actionType.ADD_MESSAGE, message });
     }
   };
 
