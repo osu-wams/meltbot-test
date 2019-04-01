@@ -8,7 +8,7 @@ import Loader from './Loader';
 import FollowUpQuestionButton from './FollowUpQuestionButton';
 import { breakpoints } from '../theme';
 
-const MessageListWrapper = styled.div`
+const MessageListWrapper = styled.main`
   grid-area: log;
   overflow-y: scroll;
   overflow-x: hidden;
