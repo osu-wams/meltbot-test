@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dialog } from '@reach/dialog';
+import { Dialog as ReachDialog } from '@reach/dialog';
 import { faTimesCircle } from '@fortawesome/pro-light-svg-icons';
 import benny from '../assets/benny.png';
 import VisuallyHidden from '@reach/visually-hidden';
@@ -19,7 +19,7 @@ const CloseButton = ({ ...props }) => (
   </IconButton>
 );
 
-const MyDialog = styled(Dialog)`
+const Dialog = styled(ReachDialog)`
   border-radius: 8px;
   [type='cancel'] {
     float: right;
@@ -67,7 +67,7 @@ const MyDialog = styled(Dialog)`
   }
 `;
 
-const MyDialogFooter = styled.div`
+const DialogFooter = styled.div`
   margin: 2.5rem 0 0;
   display: flex;
   a {
@@ -75,5 +75,4 @@ const MyDialogFooter = styled.div`
   }
 `;
 
-export { MyDialogFooter, CloseButton };
-export default MyDialog;
+export { Dialog, DialogFooter, CloseButton };
