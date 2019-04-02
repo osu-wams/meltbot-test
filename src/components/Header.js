@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLifeRing, faInfoCircle } from '@fortawesome/pro-light-svg-icons';
@@ -8,7 +8,8 @@ import IconButton from './IconButton';
 import { Color, fontSize } from '../theme';
 import { Dialog, CloseButton } from './Dialog';
 import { GlobalStateContext } from '../GlobalState';
-import toggleAbout from '../hooks/toggleAbout';
+
+const HELP_FORM_URL = process.env.REACT_APP_HELP_FORM_URL;
 
 const HeaderWrapper = styled.div`
   grid-area: header;
@@ -64,14 +65,14 @@ const QuestionButton = styled.button`
 `;
 
 const Header = () => {
-  const { isOpen, toggle } = toggleAbout();
+  const [showDialog, setShowDialog] = useState(false);
   const {
     actions: { postMessage }
   } = useContext(GlobalStateContext);
 
   const handleDialogQuestionClicked = question => {
     postMessage(question);
-    toggle();
+    setShowDialog(false);
   };
 
   return (
@@ -83,7 +84,7 @@ const Header = () => {
         <IconButton
           data-testid="about-benny"
           aria-label="About Benny"
-          onClick={() => toggle()}
+          onClick={() => setShowDialog(true)}
         >
           <FontAwesomeIcon
             icon={faInfoCircle}
@@ -94,7 +95,7 @@ const Header = () => {
         </IconButton>
         <HelpLink
           as="a"
-          href="#CHANGE_ME_QUALTRIX"
+          href={HELP_FORM_URL}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -106,8 +107,11 @@ const Header = () => {
           Help
         </HelpLink>
       </IconWrapper>
-      <Dialog isOpen={isOpen}>
-        <CloseButton data-testid="close-about" onClick={() => toggle()} />
+      <Dialog isOpen={showDialog}>
+        <CloseButton
+          data-testid="close-about"
+          onClick={() => setShowDialog(false)}
+        />
 
         <h2>Hi, I’m Benny!</h2>
         <p>
