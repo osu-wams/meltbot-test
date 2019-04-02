@@ -20,7 +20,6 @@ const CloseButton = ({ ...props }) => (
 );
 
 const Dialog = styled(ReachDialog)`
-  border-radius: 8px;
   [type='cancel'] {
     float: right;
     margin-right: -1rem;
@@ -38,25 +37,15 @@ const Dialog = styled(ReachDialog)`
     padding-left: 60px;
     background: url(${benny}) center left no-repeat;
   }
-  h3 {
-    font-size: ${fontSize[16]};
-    color: ${Color['neutral-200']};
-    margin-bottom: 0.5rem;
-  }
-  .details {
-    color: ${Color['neutral-600']};
-    font-size: ${fontSize[14]};
-    margin-top: -1rem;
-    margin-bottom: 2rem;
-  }
   @media screen and (max-width: 767px) {
     &[data-reach-dialog-content] {
-      width: 92%;
-      margin: 2rem auto;
-      padding-top: 0.5rem;
+      height: 100vh;
+      width: 100%;
+      margin: 0;
     }
   }
   @media (min-width: 768px) {
+    border-radius: 8px;
     [type='cancel'] {
       margin-top: -1rem;
     }

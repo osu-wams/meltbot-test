@@ -77,7 +77,6 @@ const GlobalStateProvider = ({ ...props }) => {
           type: 'user',
           text: messageText
         });
-        console.log(userMessage);
         dispatch({ type: actionType.ADD_MESSAGE, message: userMessage });
 
         // Display loading state

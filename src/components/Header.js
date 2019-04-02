@@ -5,7 +5,7 @@ import { faLifeRing, faInfoCircle } from '@fortawesome/pro-light-svg-icons';
 import '@reach/dialog/styles.css';
 import logo from '../assets/logo.png';
 import IconButton from './IconButton';
-import { Color } from '../theme';
+import { Color, fontSize } from '../theme';
 import { Dialog, CloseButton } from './Dialog';
 import { GlobalStateContext } from '../GlobalState';
 import toggleAbout from '../hooks/toggleAbout';
@@ -19,7 +19,6 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
-  z-index: 1;
 `;
 
 const IconWrapper = styled.div`
@@ -53,8 +52,10 @@ const QuestionButton = styled.button`
   outline: none;
   background: none;
   border: none;
-  color: #069;
+  color: ${Color['orange-400']};
+  font-size: ${fontSize[16]};
   text-decoration: underline;
+  padding: 0.8rem;
   cursor: pointer;
   &:focus {
     outline: 1px dotted #212121;
