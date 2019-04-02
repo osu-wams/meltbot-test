@@ -9,6 +9,7 @@ const FollowUpQuestionButton = styled.button`
   color: #ffffff;
   background-color: ${Color['orange-400']};
   border-radius: 99px;
+  text-align: left;
   cursor: pointer;
   &:not(:last-child) {
     margin-right: 16px;

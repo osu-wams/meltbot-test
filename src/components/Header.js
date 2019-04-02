@@ -26,6 +26,10 @@ const IconWrapper = styled.div`
   display: flex;
   width: 12rem;
   justify-content: space-between;
+  font-size: ${fontSize[14]};
+  svg {
+    font-size: ${fontSize[24]};
+  }
 `;
 
 const HelpLink = styled(IconButton)`
@@ -33,8 +37,8 @@ const HelpLink = styled(IconButton)`
 `;
 
 const Logo = styled.img`
-  height: 44px;
-  width: 140px;
+  height: auto;
+  width: 170px;
 `;
 
 const modalQuestions = [
@@ -58,6 +62,7 @@ const QuestionButton = styled.button`
   text-decoration: underline;
   padding: 0.8rem;
   cursor: pointer;
+  text-align: left;
   &:focus {
     outline: 1px dotted #212121;
     outline: 5px auto -webkit-focus-ring-color;
@@ -86,11 +91,7 @@ const Header = () => {
           aria-label="About Benny"
           onClick={() => setShowDialog(true)}
         >
-          <FontAwesomeIcon
-            icon={faInfoCircle}
-            size="2x"
-            color={Color['neutral-600']}
-          />
+          <FontAwesomeIcon icon={faInfoCircle} color={Color['neutral-600']} />
           About
         </IconButton>
         <HelpLink
@@ -99,11 +100,7 @@ const Header = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <FontAwesomeIcon
-            icon={faLifeRing}
-            size="2x"
-            color={Color['orange-400']}
-          />
+          <FontAwesomeIcon icon={faLifeRing} color={Color['orange-400']} />
           Help
         </HelpLink>
       </IconWrapper>
