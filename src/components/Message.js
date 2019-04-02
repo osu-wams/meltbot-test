@@ -5,12 +5,12 @@ import benny from '../assets/benny.png';
 
 const StyledMessage = styled.div`
   display: inline-block;
-  max-width: 80%;
+  max-width: 70%;
   background-color: #d73f09;
   border-radius: 20px;
   padding: 16px;
   margin-bottom: 12px;
-
+  text-align: left;
   & > :first-child {
     margin-top: 0;
   }
