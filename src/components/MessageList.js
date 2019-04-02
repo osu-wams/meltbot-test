@@ -6,7 +6,6 @@ import { GlobalStateContext } from '../GlobalState';
 import Message from './Message';
 import Loader from './Loader';
 import FollowUpQuestionButton from './FollowUpQuestionButton';
-import { breakpoints } from '../theme';
 
 const MessageListWrapper = styled.main`
   grid-area: log;
@@ -17,10 +16,6 @@ const MessageListWrapper = styled.main`
   .user {
     text-align: right;
   }
-  /* @media (min-width: ${breakpoints[768]}) {
-    margin: 0 auto;
-    max-width: 768px;
-  } */
 `;
 
 const MessageList = ({ ...props }) => {
