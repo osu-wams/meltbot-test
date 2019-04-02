@@ -39,7 +39,7 @@ const Dialog = styled(ReachDialog)`
   }
   @media screen and (max-width: 767px) {
     &[data-reach-dialog-content] {
-      height: 100vh;
+      height: 100%;
       width: 100%;
       margin: 0;
     }
