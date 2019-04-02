@@ -17,10 +17,10 @@ const MessageListWrapper = styled.main`
   .user {
     text-align: right;
   }
-  @media (min-width: ${breakpoints[768]}) {
+  /* @media (min-width: ${breakpoints[768]}) {
     margin: 0 auto;
     max-width: 768px;
-  }
+  } */
 `;
 
 const MessageList = ({ ...props }) => {
@@ -57,43 +57,47 @@ const MessageList = ({ ...props }) => {
       {...props}
       data-testid="MessageList"
     >
-      {state.messages.length > 0 &&
-        state.messages.map(({ id, type, text, followUpQuestions }) => {
-          if (type === 'loading') {
+      <div style={{ maxWidth: '768px', margin: '0 auto' }}>
+        {state.messages.length > 0 &&
+          state.messages.map(({ id, type, text, followUpQuestions }) => {
+            if (type === 'loading') {
+              return (
+                <Message type="bot" key={id}>
+                  <Loader />
+                </Message>
+              );
+            }
             return (
-              <Message type="bot" key={id}>
-                <Loader />
-              </Message>
+              <div key={id} className={type === 'user' ? 'user' : ''}>
+                <Message type={type}>
+                  <ReactMarkdown source={text} linkTarget="_blank" />
+                </Message>
+                {followUpQuestions.length > 0 && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+                    <VisuallyHidden>
+                      Suggested followup questions:
+                    </VisuallyHidden>
+                    {followUpQuestions.map((question, index) => (
+                      <FollowUpQuestionButton
+                        onClick={() => handleFollowUpClick(question)}
+                        key={id + index}
+                        tabIndex="10"
+                        data-testid="followup-button"
+                      >
+                        {question}
+                      </FollowUpQuestionButton>
+                    ))}
+                  </div>
+                )}
+              </div>
             );
-          }
-          return (
-            <div key={id} className={type === 'user' ? 'user' : ''}>
-              <Message type={type}>
-                <ReactMarkdown source={text} linkTarget="_blank" />
-              </Message>
-              {followUpQuestions.length > 0 && (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap'
-                  }}
-                >
-                  <VisuallyHidden>Suggested followup questions:</VisuallyHidden>
-                  {followUpQuestions.map((question, index) => (
-                    <FollowUpQuestionButton
-                      onClick={() => handleFollowUpClick(question)}
-                      key={id + index}
-                      tabIndex="10"
-                      data-testid="followup-button"
-                    >
-                      {question}
-                    </FollowUpQuestionButton>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+          })}
+      </div>
     </MessageListWrapper>
   );
 };
