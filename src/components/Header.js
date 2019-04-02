@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faQuestionCircle } from '@fortawesome/pro-light-svg-icons';
-import VisuallyHidden from '@reach/visually-hidden';
+import { faLifeRing, faInfoCircle } from '@fortawesome/pro-light-svg-icons';
 import '@reach/dialog/styles.css';
 import logo from '../assets/logo.png';
 import IconButton from './IconButton';
 import { Color } from '../theme';
 import { Dialog, CloseButton } from './Dialog';
 import { GlobalStateContext } from '../GlobalState';
+import toggleAbout from '../hooks/toggleAbout';
 
 const HeaderWrapper = styled.div`
   grid-area: header;
@@ -20,9 +20,16 @@ const HeaderWrapper = styled.div`
   align-items: center;
   padding: 0 12px;
   z-index: 1;
-  a + svg {
-    margin-left: 12px;
-  }
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  width: 12rem;
+  justify-content: space-between;
+`;
+
+const HelpLink = styled(IconButton)`
+  text-decoration: none;
 `;
 
 const Logo = styled.img`
@@ -56,14 +63,14 @@ const QuestionButton = styled.button`
 `;
 
 const Header = () => {
-  const [isOpen, setOpen] = useState(false);
+  const { isOpen, toggle } = toggleAbout();
   const {
     actions: { postMessage }
   } = useContext(GlobalStateContext);
 
   const handleDialogQuestionClicked = question => {
     postMessage(question);
-    setOpen(false);
+    toggle();
   };
 
   return (
@@ -71,36 +78,35 @@ const Header = () => {
       <a href="https://oregonstate.edu" rel="noopener noreferrrer">
         <Logo src={logo} alt="Oregon State University" />
       </a>
-      <div>
-        <a
-          href="https://search.oregonstate.edu"
+      <IconWrapper>
+        <IconButton
+          data-testid="about-benny"
+          aria-label="About Benny"
+          onClick={() => toggle()}
+        >
+          <FontAwesomeIcon
+            icon={faInfoCircle}
+            size="2x"
+            color={Color['neutral-600']}
+          />
+          About
+        </IconButton>
+        <HelpLink
+          as="a"
+          href="#CHANGE_ME_QUALTRIX"
           target="_blank"
           rel="noopener noreferrer"
         >
           <FontAwesomeIcon
-            icon={faSearch}
+            icon={faLifeRing}
             size="2x"
-            color={Color['neutral-600']}
+            color={Color['orange-400']}
           />
-          <VisuallyHidden>Search Oregon State University</VisuallyHidden>
-        </a>
-        <IconButton
-          data-testid="about-benny"
-          aria-label="About Benny"
-          onClick={() => setOpen(!isOpen)}
-        >
-          <FontAwesomeIcon
-            icon={faQuestionCircle}
-            size="2x"
-            color={Color['neutral-600']}
-          />
-        </IconButton>
-      </div>
+          Help
+        </HelpLink>
+      </IconWrapper>
       <Dialog isOpen={isOpen}>
-        <CloseButton
-          data-testid="close-about"
-          onClick={() => setOpen(!isOpen)}
-        />
+        <CloseButton data-testid="close-about" onClick={() => toggle()} />
 
         <h2>Hi, I’m Benny!</h2>
         <p>
