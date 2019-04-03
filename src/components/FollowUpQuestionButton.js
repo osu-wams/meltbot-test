@@ -1,20 +1,21 @@
 import styled from 'styled-components';
 import { Color, fontSize } from '../theme';
 
+const spacing = '0.6rem';
 const FollowUpQuestionButton = styled.button`
   font-size: ${fontSize[14]};
   outline: none;
   border: none;
-  padding: 8px 12px;
+  padding: 1.2rem 1.6rem;
   color: #ffffff;
   background-color: ${Color['orange-400']};
   border-radius: 99px;
   text-align: left;
   cursor: pointer;
   &:not(:last-child) {
-    margin-right: 16px;
+    margin-right: ${spacing};
   }
-  margin-bottom: 12px;
+  margin-bottom: ${spacing};
   &:hover,
   &:active,
   &:focus {
