@@ -32,7 +32,7 @@ const StyledMessage = styled.div`
         border: 1px solid ${Color['neutral-400']};
         &:before {
           content: ' ';
-          background: url(${benny});
+          background: url(${benny}) no-repeat center center;
           width: 50px;
           height: 50px;
           position: absolute;
