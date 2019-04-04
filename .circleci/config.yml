@@ -6,6 +6,7 @@ version: 2.1
 
 orbs:
   aws-s3: circleci/aws-s3@1.0.3
+  aws-cli: circleci/aws-cli@0.1.13
 
 executors:
   node-executor:
@@ -85,6 +86,15 @@ jobs:
           from: ~/project/build
           to: 's3://chatbot-enrollment'
 
+  flush_cache:
+    executor: aws-cli/default
+    steps:
+      - aws-cli/install
+      - aws-cli/configure
+      - run:
+          name: Invalidate Index
+          command: aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFORMATION_DISTRIBUTION_ID} --paths /index.html
+
 workflows:
   build_test_deploy:
     jobs:
@@ -102,3 +112,6 @@ workflows:
             branches:
               only:
                 - master
+      - flush_cache:
+          requires:
+            - deploy
