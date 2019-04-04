@@ -85,13 +85,11 @@ const MessageList = ({ ...props }) => {
               );
             }
             return (
-              <div
-                key={id}
-                tabindex="0"
-                className={type === 'user' ? 'user' : ''}
-                aria-label={type === 'user' ? 'You said' : 'Benny said'}
-              >
+              <div key={id} className={type === 'user' ? 'user' : ''}>
                 <Message type={type}>
+                  <VisuallyHidden>
+                    {type === 'user' ? 'You said' : 'Benny said'}
+                  </VisuallyHidden>
                   <ReactMarkdown
                     source={text}
                     linkTarget="_blank"
