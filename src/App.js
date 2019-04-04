@@ -51,7 +51,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <MessageList role="log" />
+      <MessageList />
       <UserInput />
     </div>
   );

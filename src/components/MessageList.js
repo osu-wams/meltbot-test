@@ -68,6 +68,8 @@ const MessageList = ({ ...props }) => {
 
   return (
     <MessageListWrapper
+      role="log"
+      aria-live="assertive"
       ref={messageListEl}
       {...props}
       data-testid="MessageList"
@@ -83,7 +85,12 @@ const MessageList = ({ ...props }) => {
               );
             }
             return (
-              <div key={id} className={type === 'user' ? 'user' : ''}>
+              <div
+                key={id}
+                tabindex="0"
+                className={type === 'user' ? 'user' : ''}
+                aria-label={type === 'user' ? 'You said' : 'Benny said'}
+              >
                 <Message type={type}>
                   <ReactMarkdown
                     source={text}
@@ -105,7 +112,6 @@ const MessageList = ({ ...props }) => {
                       <FollowUpQuestionButton
                         onClick={() => handleFollowUpClick(question.value)}
                         key={id + index}
-                        tabIndex="10"
                         data-testid="followup-button"
                       >
                         {question.text}
