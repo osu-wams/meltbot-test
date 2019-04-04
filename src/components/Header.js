@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLifeRing, faInfoCircle } from '@fortawesome/pro-light-svg-icons';
 import '@reach/dialog/styles.css';
+import ReactGA from 'react-ga';
 import logo from '../assets/logo.png';
 import IconButton from './IconButton';
 import { Color, fontSize } from '../theme';
 import { Dialog, CloseButton } from './Dialog';
 import { GlobalStateContext } from '../GlobalState';
-
-const HELP_FORM_URL = process.env.REACT_APP_HELP_FORM_URL;
+import config from '../config';
 
 const HeaderWrapper = styled.div`
   grid-area: header;
@@ -78,27 +78,44 @@ const Header = () => {
   const handleDialogQuestionClicked = question => {
     postMessage(question);
     setShowDialog(false);
+
+    // Log action with GA
+    ReactGA.event({
+      category: 'UserAction',
+      action: 'Info modal question clicked',
+      label: question
+    });
   };
 
   return (
     <HeaderWrapper>
-      <a href="https://oregonstate.edu" rel="noopener noreferrrer">
+      <ReactGA.OutboundLink
+        to="https://oregonstate.edu"
+        eventLabel="https://oregonstate.edu"
+        target="_blank"
+      >
         <Logo src={logo} alt="Oregon State University" />
-      </a>
+      </ReactGA.OutboundLink>
       <IconWrapper>
         <IconButton
           data-testid="about-benny"
           aria-label="About Benny"
-          onClick={() => setShowDialog(true)}
+          onClick={() => {
+            setShowDialog(true);
+            ReactGA.modalview('info-modal');
+          }}
         >
           <FontAwesomeIcon icon={faInfoCircle} color={Color['neutral-600']} />
           About
         </IconButton>
         <HelpLink
           as="a"
-          href={HELP_FORM_URL}
+          href={config.HELP_FORM_URL}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() =>
+            ReactGA.outboundLink({ label: config.HELP_FORM_URL }, () => {})
+          }
         >
           <FontAwesomeIcon icon={faLifeRing} color={Color['orange-400']} />
           Help

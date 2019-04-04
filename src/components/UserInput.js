@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/pro-light-svg-icons';
+import ReactGA from 'react-ga';
 import { Color, fontSize, breakpoints } from '../theme';
 import { GlobalStateContext } from '../GlobalState';
 
@@ -56,6 +57,13 @@ const UserInput = () => {
     if (value) {
       // Send user message
       postMessage(value);
+
+      // Log action with GA
+      ReactGA.event({
+        category: 'UserAction',
+        action: 'Entered a question',
+        label: value
+      });
 
       // Clear input
       setValue('');

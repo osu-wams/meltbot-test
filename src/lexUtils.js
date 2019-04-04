@@ -1,12 +1,13 @@
 import { LexRuntime, CognitoIdentityCredentials } from 'aws-sdk';
 import generateId from 'uuid/v4';
+import config from './config';
 
 let lexRuntime = new LexRuntime({
   apiVersion: '2016-11-28',
-  region: process.env.REACT_APP_REGION,
+  region: config.AWS_REGION,
   credentials: new CognitoIdentityCredentials(
-    { IdentityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID },
-    { region: process.env.REACT_APP_REGION }
+    { IdentityPoolId: config.AWS_COGNITO_IDENTITY_POOL_ID },
+    { region: config.AWS_REGION }
   )
 });
 
@@ -29,8 +30,8 @@ const postMessage = messageText => {
   // Post user message to Lex
   return lexRuntime
     .postText({
-      botName: process.env.REACT_APP_BOT_NAME,
-      botAlias: process.env.REACT_APP_BOT_ALIAS,
+      botName: config.AWS_LEX_BOT_NAME,
+      botAlias: config.AWS_LEX_BOT_ALIAS,
       userId: `lex-web-ui-${Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
         .substring(1)}`,

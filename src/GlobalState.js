@@ -124,7 +124,6 @@ const GlobalStateProvider = ({ ...props }) => {
         // Add returned message to message list
         dispatch({ type: actionType.ADD_MESSAGE, message: responseMessage });
       } catch (err) {
-        console.log(err);
         // Clear loading state
         dispatch({ type: actionType.LOADING_DONE });
 

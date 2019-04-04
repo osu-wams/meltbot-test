@@ -18,7 +18,7 @@ const messages = [
       'What is your name?',
       'What is your quest?',
       'What... is your favorite colour?'
-    ]
+    ].map(e => ({ text: e, value: e }))
   }
 ];
 

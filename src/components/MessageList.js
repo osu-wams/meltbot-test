@@ -2,10 +2,23 @@ import React, { useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 import VisuallyHidden from '@reach/visually-hidden';
+import ReactGA from 'react-ga';
 import { GlobalStateContext } from '../GlobalState';
 import Message from './Message';
 import Loader from './Loader';
 import FollowUpQuestionButton from './FollowUpQuestionButton';
+
+// Configure links to render in GA-trackable component
+const markdownRenderers = {
+  link: ({ href, ...props }) => (
+    <ReactGA.OutboundLink
+      eventLabel={href}
+      target="_blank"
+      to={href}
+      {...props}
+    />
+  )
+};
 
 const MessageListWrapper = styled.main`
   grid-area: log;
@@ -44,6 +57,13 @@ const MessageList = ({ ...props }) => {
   const handleFollowUpClick = async followUpQuestion => {
     // Send clicked question to Lex
     postMessage(followUpQuestion);
+
+    // Log action with GA
+    ReactGA.event({
+      category: 'UserAction',
+      action: 'Clicked follow-up question',
+      label: followUpQuestion
+    });
   };
 
   return (
@@ -65,7 +85,11 @@ const MessageList = ({ ...props }) => {
             return (
               <div key={id} className={type === 'user' ? 'user' : ''}>
                 <Message type={type}>
-                  <ReactMarkdown source={text} linkTarget="_blank" />
+                  <ReactMarkdown
+                    source={text}
+                    linkTarget="_blank"
+                    renderers={markdownRenderers}
+                  />
                 </Message>
                 {followUpQuestions.length > 0 && (
                   <div

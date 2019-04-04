@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import queryString from 'query-string';
+import ReactGA from 'react-ga';
 import './App.css';
 import { GlobalStateContext } from './GlobalState';
 import Header from './components/Header';
@@ -41,6 +42,10 @@ const App = () => {
         addBotMessage(initialMessage);
       }, 1000);
     }
+  }, []);
+
+  useEffect(() => {
+    ReactGA.pageview('/');
   }, []);
 
   return (
