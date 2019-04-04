@@ -84,6 +84,7 @@ jobs:
       - aws-s3/sync:
           from: ~/project/build
           to: 's3://chatbot-enrollment'
+          overwrite: true
 
 workflows:
   build_test_deploy:
