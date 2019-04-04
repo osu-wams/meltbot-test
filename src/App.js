@@ -9,7 +9,7 @@ import { createMessage } from './lexUtils';
 
 const App = () => {
   const {
-    actions: { postMessage, addBotMessage }
+    actions: { postMessage, addBotMessage, loadingStart, loadingDone }
   } = useContext(GlobalStateContext);
 
   useEffect(() => {
@@ -18,6 +18,8 @@ const App = () => {
     if (params.seed) {
       postMessage(params.seed);
     } else {
+      loadingStart();
+
       const initialMessage = createMessage({
         type: 'bot',
         text:
@@ -31,10 +33,13 @@ const App = () => {
           'I need help with my Immunization Requirements',
           'What is START',
           'Help with campus visits'
-        ]
+        ].map(e => ({ text: e, value: e }))
       });
 
-      addBotMessage(initialMessage);
+      setTimeout(() => {
+        loadingDone();
+        addBotMessage(initialMessage);
+      }, 1000);
     }
   }, []);
 

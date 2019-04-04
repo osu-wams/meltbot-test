@@ -55,7 +55,7 @@ const postMessage = messageText => {
         data.responseCard.genericAttachments.length
       ) {
         followUpQuestions = data.responseCard.genericAttachments[0].buttons.map(
-          e => e.text
+          e => ({ text: e.text, value: e.value })
         );
       }
 

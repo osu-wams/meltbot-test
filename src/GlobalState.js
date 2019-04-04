@@ -138,6 +138,12 @@ const GlobalStateProvider = ({ ...props }) => {
     },
     addBotMessage(message) {
       dispatch({ type: actionType.ADD_MESSAGE, message });
+    },
+    loadingStart() {
+      dispatch({ type: actionType.LOADING_START });
+    },
+    loadingDone() {
+      dispatch({ type: actionType.LOADING_DONE });
     }
   };
 

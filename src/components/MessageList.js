@@ -79,12 +79,12 @@ const MessageList = ({ ...props }) => {
                     </VisuallyHidden>
                     {followUpQuestions.map((question, index) => (
                       <FollowUpQuestionButton
-                        onClick={() => handleFollowUpClick(question)}
+                        onClick={() => handleFollowUpClick(question.value)}
                         key={id + index}
                         tabIndex="10"
                         data-testid="followup-button"
                       >
-                        {question}
+                        {question.text}
                       </FollowUpQuestionButton>
                     ))}
                   </div>
