@@ -42,15 +42,17 @@ const Logo = styled.img`
 `;
 
 const modalQuestions = [
-  'Advance Tuition Deposit',
-  'ONID',
-  'Scholarships',
-  'Financial Aid',
-  'Housing',
-  'Immunization requirements',
-  'START (orientation)',
-  'Campus visits',
-  'Welcome Week'
+  { text: 'Advance Tuition Deposit', value: 'I need help with my ATD' },
+  { text: 'ONID', value: 'What is an ONID' },
+  { text: 'Scholarships', value: 'I need help with my Scholarships' },
+  { text: 'Financial Aid', value: 'I need help with Financial Aid' },
+  { text: 'Housing', value: 'I need help with Housing' },
+  {
+    text: 'Immunization requirements',
+    value: 'I need help with my Immunization Requirements'
+  },
+  { text: 'START (orientation)', value: 'What is START' },
+  { text: 'Campus visits', value: 'Help with campus visits' }
 ];
 
 const QuestionButton = styled.button`
@@ -136,9 +138,9 @@ const Header = () => {
           {modalQuestions.map((question, index) => (
             <li key={index}>
               <QuestionButton
-                onClick={() => handleDialogQuestionClicked(question)}
+                onClick={() => handleDialogQuestionClicked(question.value)}
               >
-                {question}
+                {question.text}
               </QuestionButton>
             </li>
           ))}
