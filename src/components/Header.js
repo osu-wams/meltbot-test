@@ -121,7 +121,7 @@ const Header = () => {
           Help
         </HelpLink>
       </IconWrapper>
-      <Dialog isOpen={showDialog}>
+      <Dialog isOpen={showDialog} onDismiss={() => setShowDialog(false)}>
         <CloseButton
           data-testid="close-about"
           onClick={() => setShowDialog(false)}
