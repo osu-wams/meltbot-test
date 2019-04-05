@@ -114,4 +114,4 @@ workflows:
                 - master
       - flush_cache:
           requires:
-            - build
+            - deploy
