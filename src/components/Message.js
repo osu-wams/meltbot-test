@@ -11,14 +11,11 @@ const StyledMessage = styled.div`
   padding: 16px;
   margin-bottom: 12px;
   text-align: left;
-  & > :first-child {
+  & > span + p {
+    /* first <p> element after VisuallyHiddem */
     margin-top: 0;
   }
   & > :last-child {
-    margin-bottom: 0;
-  }
-  & > :only-child {
-    margin-top: 0;
     margin-bottom: 0;
   }
   ${props => {
