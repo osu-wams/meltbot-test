@@ -12,7 +12,6 @@ const actionType = {
 
 const reducer = (state, action) => {
   let messages;
-  let targetMessage;
 
   switch (action.type) {
     case actionType.ADD_MESSAGE:
@@ -35,14 +34,10 @@ const reducer = (state, action) => {
       return state;
 
     case actionType.LOADING_START:
-      const loadingMessage = createMessage({ type: 'loading' });
-      return { ...state, messages: [...state.messages, loadingMessage] };
+      return { ...state, loading: true };
 
     case actionType.LOADING_DONE:
-      messages = state.messages;
-      targetMessage = messages.find(e => e.type === 'loading');
-      messages.splice(messages.indexOf(targetMessage), 1);
-      return { ...state, messages };
+      return { ...state, loading: false };
 
     case actionType.INCREMENT_FAILED_SEARCH_COUNT:
       return { ...state, failedSearchCount: state.failedSearchCount + 1 };
@@ -58,6 +53,7 @@ const reducer = (state, action) => {
 
 const initialState = {
   failedSearchCount: 0,
+  loading: true,
   messages: []
 };
 

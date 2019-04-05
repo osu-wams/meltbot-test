@@ -11,8 +11,8 @@ const LoadingAnimation = keyframes`
 `;
 
 const Dot = styled.div`
-  width: 16px;
-  height: 16px;
+  width: 8px;
+  height: 8px;
   background-color: ${Color['neutral-600']};
   border-radius: 100%;
   display: inline-block;
@@ -30,7 +30,7 @@ const Dot2 = styled(Dot)`
 
 const Loader = () => {
   return (
-    <div>
+    <div style={{ display: 'inline' }}>
       <Dot1 />
       <Dot2 />
       <Dot />

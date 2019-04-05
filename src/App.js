@@ -5,6 +5,7 @@ import './App.css';
 import { GlobalStateContext } from './GlobalState';
 import Header from './components/Header';
 import MessageList from './components/MessageList';
+import LoadingDisplay from './components/LoadingDisplay';
 import UserInput from './components/UserInput';
 import { createMessage } from './lexUtils';
 
@@ -52,6 +53,7 @@ const App = () => {
     <div className="App">
       <Header />
       <MessageList />
+      <LoadingDisplay />
       <UserInput />
     </div>
   );

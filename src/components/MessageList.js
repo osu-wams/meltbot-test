@@ -5,7 +5,6 @@ import VisuallyHidden from '@reach/visually-hidden';
 import ReactGA from 'react-ga';
 import { GlobalStateContext } from '../GlobalState';
 import Message from './Message';
-import Loader from './Loader';
 import FollowUpQuestionButton from './FollowUpQuestionButton';
 
 // Configure links to render in GA-trackable component
@@ -76,50 +75,39 @@ const MessageList = ({ ...props }) => {
     >
       <div style={{ maxWidth: '768px', margin: '0 auto' }}>
         {state.messages.length > 0 &&
-          state.messages.map(({ id, type, text, followUpQuestions }) => {
-            if (type === 'loading') {
-              return (
-                <Message type="bot" key={id}>
-                  <Loader />
-                </Message>
-              );
-            }
-            return (
-              <div key={id} className={type === 'user' ? 'user' : ''}>
-                <Message type={type}>
-                  <VisuallyHidden>
-                    {type === 'user' ? 'You said' : 'Benny said'}
-                  </VisuallyHidden>
-                  <ReactMarkdown
-                    source={text}
-                    linkTarget="_blank"
-                    renderers={markdownRenderers}
-                  />
-                </Message>
-                {followUpQuestions.length > 0 && (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap'
-                    }}
-                  >
-                    <VisuallyHidden>
-                      Suggested followup questions:
-                    </VisuallyHidden>
-                    {followUpQuestions.map((question, index) => (
-                      <FollowUpQuestionButton
-                        onClick={() => handleFollowUpClick(question.value)}
-                        key={id + index}
-                        data-testid="followup-button"
-                      >
-                        {question.text}
-                      </FollowUpQuestionButton>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          state.messages.map(({ id, type, text, followUpQuestions }) => (
+            <div key={id} className={type === 'user' ? 'user' : ''}>
+              <Message type={type}>
+                <VisuallyHidden>
+                  {type === 'user' ? 'You said' : 'Benny said'}
+                </VisuallyHidden>
+                <ReactMarkdown
+                  source={text}
+                  linkTarget="_blank"
+                  renderers={markdownRenderers}
+                />
+              </Message>
+              {followUpQuestions.length > 0 && (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap'
+                  }}
+                >
+                  <VisuallyHidden>Suggested followup questions:</VisuallyHidden>
+                  {followUpQuestions.map((question, index) => (
+                    <FollowUpQuestionButton
+                      onClick={() => handleFollowUpClick(question.value)}
+                      key={id + index}
+                      data-testid="followup-button"
+                    >
+                      {question.text}
+                    </FollowUpQuestionButton>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
       </div>
     </MessageListWrapper>
   );
