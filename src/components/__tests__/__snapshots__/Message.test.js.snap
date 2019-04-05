@@ -17,16 +17,11 @@ exports[`BotMessage - Message with type="bot" is styled appropriately 1`] = `
   border: 1px solid #B7B1AF;
 }
 
-.c0 > :first-child {
+.c0 > span + p {
   margin-top: 0;
 }
 
 .c0 > :last-child {
-  margin-bottom: 0;
-}
-
-.c0 > :only-child {
-  margin-top: 0;
   margin-bottom: 0;
 }
 
@@ -68,16 +63,11 @@ exports[`FollowUpQuestion - Message with no type - is styled appropriately 1`] =
   text-align: left;
 }
 
-.c0 > :first-child {
+.c0 > span + p {
   margin-top: 0;
 }
 
 .c0 > :last-child {
-  margin-bottom: 0;
-}
-
-.c0 > :only-child {
-  margin-top: 0;
   margin-bottom: 0;
 }
 
@@ -107,16 +97,11 @@ exports[`UserMessage - Message with type="user" is styled appropriately 1`] = `
   color: #ffffff;
 }
 
-.c0 > :first-child {
+.c0 > span + p {
   margin-top: 0;
 }
 
 .c0 > :last-child {
-  margin-bottom: 0;
-}
-
-.c0 > :only-child {
-  margin-top: 0;
   margin-bottom: 0;
 }
 
