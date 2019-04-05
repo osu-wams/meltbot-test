@@ -24,6 +24,7 @@ const HeaderWrapper = styled.div`
 
 const IconWrapper = styled.div`
   display: flex;
+  padding-top: 0.4rem;
   width: 12rem;
   justify-content: space-between;
   font-size: ${fontSize[14]};

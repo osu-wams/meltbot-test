@@ -27,7 +27,8 @@ const LoadingDisplayWrapper = styled.div`
   grid-area: loading;
   text-align: left;
   width: 100%;
-  padding-left: 16px;
+  padding-left: 1.6rem;
+  padding-bottom: 3rem;
   @media (min-width: ${breakpoints[768]}) {
     margin: 0 auto;
     max-width: 768px;
