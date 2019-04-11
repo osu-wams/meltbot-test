@@ -78,6 +78,36 @@ const GlobalStateProvider = ({ ...props }) => {
         // Display loading state
         dispatch({ type: actionType.LOADING_START });
 
+        // If 'help' message entered,
+        const isHelpMessage = messageText.match(/^help$/i);
+        if (isHelpMessage) {
+          // Offer a mailto link with a chat log for additional help if multiple searches in a row have failed to return results
+          let chatLog = state.messages
+            .map(
+              ({ type, text }) =>
+                `${type === 'bot' ? 'Benny:' : 'User:'} ${text}`
+            )
+            .join('\n\n');
+
+          const mailtoSubject = encodeURIComponent('Help with Benny');
+          const mailtoBody = encodeURIComponent(chatLog);
+          const mailtoLink = `mailto:admissions@oregonstate.edu?subject=${mailtoSubject}&body=${mailtoBody}`;
+
+          const helpMessage = createMessage({
+            text: `If you need additional assistance, please contact [Admissions](${mailtoLink}).`,
+            type: 'bot'
+          });
+
+          // Clear loading state
+          dispatch({ type: actionType.LOADING_DONE });
+
+          // Add help message to message list
+          dispatch({ type: actionType.ADD_MESSAGE, message: helpMessage });
+
+          // Bail out early so we don't send a request to Lex
+          return;
+        }
+
         // Send message and get response from Lex
         const responseMessage = await postMessageToLex(messageText);
 
