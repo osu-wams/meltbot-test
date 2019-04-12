@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import { createMessage, postMessage as postMessageToLex } from './lexUtils';
+import ReactGA from 'react-ga';
 
 const actionType = {
   ADD_MESSAGE: 'ADD_MESSAGE',
@@ -118,6 +119,14 @@ const GlobalStateProvider = ({ ...props }) => {
         const responseContainsErrorMessage = responseMessage.text.match(
           /sorry, i did/i
         );
+
+        if (responseContainsErrorMessage) {
+          ReactGA.event({
+            category: 'FailedSearch',
+            action: 'FailedSearch',
+            label: messageText
+          });
+        }
 
         if (responseContainsErrorMessage && state.failedSearchCount >= 2) {
           // Offer a mailto link with a chat log for additional help if multiple searches in a row have failed to return results
