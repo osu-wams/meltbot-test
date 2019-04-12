@@ -123,7 +123,7 @@ const GlobalStateProvider = ({ ...props }) => {
         if (responseContainsErrorMessage) {
           ReactGA.event({
             category: 'FailedSearch',
-            action: 'FailedSearch',
+            action: 'Question lead to a failed search',
             label: messageText
           });
         }

@@ -14,7 +14,9 @@ const isTest = process.env.NODE_ENV === 'test';
 if (!isTest) {
   ReactGA.initialize(config.GA_TRACKING_ID, {
     debug: isDevelopment,
-    siteSpeedSampleRate: 100
+    gaOptions: {
+      siteSpeedSampleRate: 100
+    }
   });
 }
 
