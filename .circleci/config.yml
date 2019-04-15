@@ -39,7 +39,7 @@ jobs:
           root: /home/circleci
           paths: project
 
-  lint_test_coverage:
+  lint-test-coverage:
     executor: node-executor
     steps:
       - attach_workspace:
@@ -61,7 +61,7 @@ jobs:
           root: /home/circleci
           paths: project
 
-  build:
+  build: &build
     executor: node-executor
     steps:
       - attach_workspace:
@@ -75,7 +75,12 @@ jobs:
           root: /home/circleci
           paths: project/build
 
-  deploy:
+  build-dev:
+    <<: *build
+  build-prod:
+    <<: *build
+
+  deploy: &deploy
     docker:
       - image: circleci/python:2.7
     steps:
@@ -84,34 +89,81 @@ jobs:
 
       - aws-s3/sync:
           from: ~/project/build
-          to: 's3://chatbot-enrollment'
+          to: ${AWS_S3_BUCKET_URL}
 
-  flush_cache:
+  deploy-dev:
+    <<: *deploy
+  deploy-prod:
+    <<: *deploy
+
+  flush-cache: &flush-cache
     executor: aws-cli/default
     steps:
       - aws-cli/install
       - aws-cli/configure
       - run:
           name: Invalidate Index
-          command: aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFORMATION_DISTRIBUTION_ID} --paths /index.html
+          command: aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths /index.html
+
+  flush-cache-dev:
+    <<: *flush-cache
+  flush-cache-prod:
+    <<: *flush-cache
 
 workflows:
   build_test_deploy:
     jobs:
       - install
-      - lint_test_coverage:
+      - lint-test-coverage:
           requires:
             - install
-      - build:
+
+      - build-dev:
           requires:
-            - lint_test_coverage
-      - deploy:
+            - lint-test-coverage
+          context: enrollment-chatbot-dev
+          filters:
+            branches:
+              ignore:
+                - master
+      - deploy-dev:
           requires:
-            - build
+            - build-dev
+          context: enrollment-chatbot-dev
+          filters:
+            branches:
+              ignore:
+                - master
+      - flush-cache-dev:
+          requires:
+            - deploy-dev
+          context: enrollment-chatbot-dev
+          filters:
+            branches:
+              ignore:
+                - master
+
+      - build-prod:
+          requires:
+            - lint-test-coverage
+          context: enrollment-chatbot-prod
           filters:
             branches:
               only:
                 - master
-      - flush_cache:
+      - deploy-prod:
           requires:
-            - deploy
+            - build-prod
+          context: enrollment-chatbot-prod
+          filters:
+            branches:
+              only:
+                - master
+      - flush-cache-prod:
+          requires:
+            - deploy-prod
+          context: enrollment-chatbot-prod
+          filters:
+            branches:
+              only:
+                - master
