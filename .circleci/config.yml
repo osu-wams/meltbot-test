@@ -61,7 +61,7 @@ jobs:
           root: /home/circleci
           paths: project
 
-  build:
+  build: &build
     executor: node-executor
     steps:
       - attach_workspace:
@@ -80,7 +80,7 @@ jobs:
   build-prod:
     <<: *build
 
-  deploy:
+  deploy: &deploy
     docker:
       - image: circleci/python:2.7
     steps:
@@ -96,7 +96,7 @@ jobs:
   deploy-prod:
     <<: *deploy
 
-  flush_cache:
+  flush_cache: &deploy
     executor: aws-cli/default
     steps:
       - aws-cli/install
