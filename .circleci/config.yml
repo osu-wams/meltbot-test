@@ -120,7 +120,7 @@ workflows:
 
       - build-dev:
           requires:
-            - lint_test_coverage
+            - lint-test-coverage
           context: enrollment-chatbot-dev
           filters:
             branches:
@@ -145,7 +145,7 @@ workflows:
 
       - build-prod:
           requires:
-            - lint_test_coverage
+            - lint-test-coverage
           context: enrollment-chatbot-prod
           filters:
             branches:
