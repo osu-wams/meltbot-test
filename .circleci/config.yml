@@ -39,7 +39,7 @@ jobs:
           root: /home/circleci
           paths: project
 
-  lint_test_coverage:
+  lint-test-coverage:
     executor: node-executor
     steps:
       - attach_workspace:
@@ -74,7 +74,7 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci
           paths: project/build
-    
+
   build-dev:
     <<: *build
   build-prod:
@@ -96,7 +96,7 @@ jobs:
   deploy-prod:
     <<: *deploy
 
-  flush_cache: &deploy
+  flush-cache: &flush-cache
     executor: aws-cli/default
     steps:
       - aws-cli/install
@@ -105,16 +105,16 @@ jobs:
           name: Invalidate Index
           command: aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths /index.html
 
-  flush_cache_dev:
-    <<: *flush_cache
-  flush_cache_prod:
-    <<: *flush_cache
+  flush-cache-dev:
+    <<: *flush-cache
+  flush-cache-prod:
+    <<: *flush-cache
 
 workflows:
   build_test_deploy:
     jobs:
       - install
-      - lint_test_coverage:
+      - lint-test-coverage:
           requires:
             - install
 
