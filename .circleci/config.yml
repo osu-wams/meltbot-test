@@ -74,6 +74,11 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci
           paths: project/build
+    
+  build-dev:
+    <<: *build
+  build-prod:
+    <<: *build
 
   deploy:
     docker:
@@ -84,7 +89,12 @@ jobs:
 
       - aws-s3/sync:
           from: ~/project/build
-          to: 's3://chatbot-enrollment'
+          to: ${AWS_S3_BUCKET_URL}
+
+  deploy-dev:
+    <<: *deploy
+  deploy-prod:
+    <<: *deploy
 
   flush_cache:
     executor: aws-cli/default
@@ -93,7 +103,12 @@ jobs:
       - aws-cli/configure
       - run:
           name: Invalidate Index
-          command: aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFORMATION_DISTRIBUTION_ID} --paths /index.html
+          command: aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} --paths /index.html
+
+  flush_cache_dev:
+    <<: *flush_cache
+  flush_cache_prod:
+    <<: *flush_cache
 
 workflows:
   build_test_deploy:
@@ -102,16 +117,53 @@ workflows:
       - lint_test_coverage:
           requires:
             - install
-      - build:
+
+      - build-dev:
           requires:
             - lint_test_coverage
-      - deploy:
+          context: enrollment-chatbot-dev
+          filters:
+            branches:
+              ignore:
+                - master
+      - deploy-dev:
           requires:
-            - build
+            - build-dev
+          context: enrollment-chatbot-dev
+          filters:
+            branches:
+              ignore:
+                - master
+      - flush-cache-dev:
+          requires:
+            - deploy-dev
+          context: enrollment-chatbot-dev
+          filters:
+            branches:
+              ignore:
+                - master
+
+      - build-prod:
+          requires:
+            - lint_test_coverage
+          context: enrollment-chatbot-prod
           filters:
             branches:
               only:
                 - master
-      - flush_cache:
+      - deploy-prod:
           requires:
-            - deploy
+            - build-prod
+          context: enrollment-chatbot-prod
+          filters:
+            branches:
+              only:
+                - master
+      - flush-cache-prod:
+          requires:
+            - deploy-prod
+          context: enrollment-chatbot-prod
+          filters:
+            branches:
+              only:
+                - master
