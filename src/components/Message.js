@@ -11,6 +11,12 @@ const StyledMessage = styled.div`
   padding: 16px;
   margin-bottom: 12px;
   text-align: left;
+  /* Break long email addresses */
+  a[href^='mailto:'] {
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+  }
   & > span + p {
     /* first <p> element after VisuallyHiddem */
     margin-top: 0;
