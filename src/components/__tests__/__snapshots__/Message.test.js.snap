@@ -17,6 +17,15 @@ exports[`BotMessage - Message with type="bot" is styled appropriately 1`] = `
   border: 1px solid #B7B1AF;
 }
 
+.c0 a[href^='mailto:'] {
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
 .c0 > span + p {
   margin-top: 0;
 }
@@ -63,6 +72,15 @@ exports[`FollowUpQuestion - Message with no type - is styled appropriately 1`] =
   text-align: left;
 }
 
+.c0 a[href^='mailto:'] {
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
 .c0 > span + p {
   margin-top: 0;
 }
@@ -95,6 +113,15 @@ exports[`UserMessage - Message with type="user" is styled appropriately 1`] = `
   right: 0;
   border-radius: 16px 16px 0 16px;
   color: #ffffff;
+}
+
+.c0 a[href^='mailto:'] {
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 
 .c0 > span + p {
