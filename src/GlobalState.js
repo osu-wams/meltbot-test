@@ -90,7 +90,8 @@ const GlobalStateProvider = ({ ...props }) => {
           }?transcript=${chatTranscript}`;
 
           const helpMessage = createMessage({
-            text: `If you need additional assistance, please contact [Admissions](${helpLink}).`,
+            text: `I’m sorry, I don’t understand your question. I’m still learning, so try asking again in a 
+              different way or [get in touch with Admissions](${helpLink}).`,
             type: 'bot'
           });
 
@@ -112,7 +113,7 @@ const GlobalStateProvider = ({ ...props }) => {
 
         // Check if response contains an error message
         const responseContainsErrorMessage = responseMessage.text.match(
-          /sorry, i did/i
+          /(sorry, i did|You stumped me!)/i
         );
 
         if (responseContainsErrorMessage) {
@@ -138,7 +139,9 @@ const GlobalStateProvider = ({ ...props }) => {
           }?transcript=${chatTranscript}`;
 
           const helpMessage = createMessage({
-            text: `If you need additional assistance, please contact [Admissions](${helpLink}).`,
+            text: `Hi, I’m Benny!  
+              I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall 2019. 
+              I’m still learning, so if I’m not able to help you, [please contact Admissions](${helpLink}).`,
             type: 'bot'
           });
 
