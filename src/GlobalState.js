@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { createMessage, postMessage as postMessageToLex } from './lexUtils';
 import ReactGA from 'react-ga';
+import config from './config';
 
 const actionType = {
   ADD_MESSAGE: 'ADD_MESSAGE',
@@ -40,12 +41,6 @@ const reducer = (state, action) => {
     case actionType.LOADING_DONE:
       return { ...state, loading: false };
 
-    case actionType.INCREMENT_FAILED_SEARCH_COUNT:
-      return { ...state, failedSearchCount: state.failedSearchCount + 1 };
-
-    case actionType.RESET_FAILED_SEARCH_COUNT:
-      return { ...state, failedSearchCount: 0 };
-
     default:
       console.error('Invalid action type.');
       return state;
@@ -53,7 +48,6 @@ const reducer = (state, action) => {
 };
 
 const initialState = {
-  failedSearchCount: 0,
   loading: true,
   messages: []
 };
@@ -90,12 +84,14 @@ const GlobalStateProvider = ({ ...props }) => {
             )
             .join('\n\n');
 
-          const mailtoSubject = encodeURIComponent('Help with Benny');
-          const mailtoBody = encodeURIComponent(chatLog);
-          const mailtoLink = `mailto:admissions@oregonstate.edu?subject=${mailtoSubject}&body=${mailtoBody}`;
+          const chatTranscript = encodeURIComponent(chatLog);
+          const helpLink = `${
+            config.HELP_FORM_URL
+          }?transcript=${chatTranscript}`;
 
           const helpMessage = createMessage({
-            text: `If you need additional assistance, please contact [Admissions](${mailtoLink}).`,
+            text: `I’m sorry, I don’t understand your question. I’m still learning, so try asking again in a 
+              different way or [get in touch with Admissions](${helpLink}).`,
             type: 'bot'
           });
 
@@ -117,7 +113,7 @@ const GlobalStateProvider = ({ ...props }) => {
 
         // Check if response contains an error message
         const responseContainsErrorMessage = responseMessage.text.match(
-          /sorry, i did/i
+          /(sorry, i did|You stumped me!)/i
         );
 
         if (responseContainsErrorMessage) {
@@ -128,7 +124,7 @@ const GlobalStateProvider = ({ ...props }) => {
           });
         }
 
-        if (responseContainsErrorMessage && state.failedSearchCount >= 2) {
+        if (responseContainsErrorMessage) {
           // Offer a mailto link with a chat log for additional help if multiple searches in a row have failed to return results
           let chatLog = state.messages
             .map(
@@ -137,23 +133,20 @@ const GlobalStateProvider = ({ ...props }) => {
             )
             .join('\n\n');
 
-          const mailtoSubject = encodeURIComponent('Help with Benny');
-          const mailtoBody = encodeURIComponent(chatLog);
-          const mailtoLink = `mailto:admissions@oregonstate.edu?subject=${mailtoSubject}&body=${mailtoBody}`;
+          const chatTranscript = encodeURIComponent(chatLog);
+          const helpLink = `${
+            config.HELP_FORM_URL
+          }?transcript=${chatTranscript}`;
 
-          const testMessage = createMessage({
-            text: `It looks like I might not be getting you the answers you're looking for. You can contact [Admissions](${mailtoLink}) for more assistance.`,
+          const helpMessage = createMessage({
+            text: `Hi, I’m Benny!  
+              I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall 2019. 
+              I’m still learning, so if I’m not able to help you, [please contact Admissions](${helpLink}).`,
             type: 'bot'
           });
 
-          dispatch({ type: actionType.ADD_MESSAGE, message: testMessage });
+          dispatch({ type: actionType.ADD_MESSAGE, message: helpMessage });
           return;
-        } else if (responseContainsErrorMessage) {
-          // Increment failed search count if error message returned
-          dispatch({ type: actionType.INCREMENT_FAILED_SEARCH_COUNT });
-        } else {
-          // Reset failed search count on successful search
-          dispatch({ type: actionType.RESET_FAILED_SEARCH_COUNT });
         }
 
         // Add returned message to message list

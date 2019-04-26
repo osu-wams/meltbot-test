@@ -42,6 +42,15 @@ const Logo = styled.img`
   width: 170px;
 `;
 
+const Beta = styled.sup`
+  font-size: ${fontSize[14]};
+  position: relative;
+  left: 0.2rem;
+  top: -0.4rem;
+  font-weight: 700;
+  color: ${Color['neutral-600']};
+`;
+
 const modalQuestions = [
   { text: 'Advance Tuition Deposit', value: 'I need help with my ATD' },
   { text: 'ONID', value: 'What is an ONID' },
@@ -130,10 +139,25 @@ const Header = () => {
           onClick={() => setShowDialog(false)}
         />
 
-        <h2>Hi, I’m Benny!</h2>
+        <h2>
+          Chat with Benny<Beta>Beta</Beta>
+        </h2>
         <p>
-          I am here to help answer questions for first-year students starting at
-          OSU (Corvallis campus) Fall 2019. How can I help?
+          Hi, I’m Benny!
+          <br />I am here to help answer questions for first-year students
+          starting at OSU (Corvallis campus) Fall 2019. I’m still learning, so
+          if I’m not able to help you, please{' '}
+          <a
+            href={config.HELP_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() =>
+              ReactGA.outboundLink({ label: config.HELP_FORM_URL }, () => {})
+            }
+          >
+            contact admissions
+          </a>
+          .
         </p>
         <ul>
           {modalQuestions.map((question, index) => (

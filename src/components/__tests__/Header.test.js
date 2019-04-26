@@ -24,7 +24,7 @@ test('Modal will open and close when appropriate buttons are clicked', async () 
   fireEvent.click(openBtn);
 
   // Verify Modal is present
-  const aboutModal = await waitForElement(() => getByText('Hi, I’m Benny!'));
+  const aboutModal = await waitForElement(() => getByText('Chat with Benny'));
   expect(aboutModal).toBeInTheDocument();
 
   // Click close button on modal
