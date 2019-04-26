@@ -10,6 +10,20 @@ import UserInput from './components/UserInput';
 import config from './config';
 import { createMessage } from './lexUtils';
 
+const initialQuestions = [
+  { text: 'Advance Tuition Deposit', value: 'I need help with my ATD' },
+  { text: 'ONID', value: 'What is an ONID' },
+  { text: 'Scholarships', value: 'I need help with my Scholarships' },
+  { text: 'Financial Aid', value: 'I need help with Financial Aid' },
+  { text: 'Housing', value: 'I need help with Housing' },
+  {
+    text: 'Immunization requirements',
+    value: 'I need help with my Immunization Requirements'
+  },
+  { text: 'START (orientation)', value: 'What is START' },
+  { text: 'Campus visits', value: 'Help with campus visits' }
+];
+
 const App = () => {
   const {
     actions: { postMessage, addBotMessage, loadingStart, loadingDone }
@@ -35,17 +49,9 @@ const App = () => {
 
       const initialMessage = createMessage({
         type: 'bot',
-        text: welcomeMessage,
-        followUpQuestions: [
-          'I need help with my ATD',
-          'What is an ONID',
-          'I need help with my Scholarships',
-          'I need help with Financial Aid',
-          'I need help with Housing',
-          'I need help with my Immunization Requirements',
-          'What is START',
-          'Help with campus visits'
-        ].map(e => ({ text: e, value: e }))
+        text:
+          'Hello, I am Benny. I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall 2019. How can I help?',
+        followUpQuestions: initialQuestions
       });
 
       setTimeout(() => {
