@@ -60,6 +60,9 @@ const postMessage = messageText => {
         );
       }
 
+      // Add a generic help option to all follow-up questions
+      followUpQuestions.push({ text: 'Help', value: 'help' });
+
       // Construct message from response data
       const botResponse = createMessage({
         type: 'bot',
