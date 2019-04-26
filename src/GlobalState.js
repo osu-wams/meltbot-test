@@ -57,6 +57,19 @@ const GlobalStateContext = React.createContext(null);
 const GlobalStateProvider = ({ ...props }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  let chatLog = state.messages
+    .map(({ type, text }) => `${type === 'bot' ? 'Benny:' : 'User:'} ${text}`)
+    .join('\n\n');
+
+  const chatTranscript = encodeURIComponent(chatLog);
+  const helpLink = `${config.HELP_FORM_URL}?transcript=${chatTranscript}`;
+
+  const noAnswerMessage = createMessage({
+    text: `I’m sorry, I don’t understand your question. I’m still learning, so try asking again in a 
+              different way or [get in touch with Admissions](${helpLink}).`,
+    type: 'bot'
+  });
+
   const actions = {
     async postMessage(messageText) {
       try {
@@ -77,21 +90,9 @@ const GlobalStateProvider = ({ ...props }) => {
         const isHelpMessage = messageText.match(/^help$/i);
         if (isHelpMessage) {
           // Offer a mailto link with a chat log for additional help if multiple searches in a row have failed to return results
-          let chatLog = state.messages
-            .map(
-              ({ type, text }) =>
-                `${type === 'bot' ? 'Benny:' : 'User:'} ${text}`
-            )
-            .join('\n\n');
-
-          const chatTranscript = encodeURIComponent(chatLog);
-          const helpLink = `${
-            config.HELP_FORM_URL
-          }?transcript=${chatTranscript}`;
 
           const helpMessage = createMessage({
-            text: `I’m sorry, I don’t understand your question. I’m still learning, so try asking again in a 
-              different way or [get in touch with Admissions](${helpLink}).`,
+            text: `If you need additional assistance, please [contact Admissions](${helpLink}).`,
             type: 'bot'
           });
 
@@ -125,27 +126,7 @@ const GlobalStateProvider = ({ ...props }) => {
         }
 
         if (responseContainsErrorMessage) {
-          // Offer a mailto link with a chat log for additional help if multiple searches in a row have failed to return results
-          let chatLog = state.messages
-            .map(
-              ({ type, text }) =>
-                `${type === 'bot' ? 'Benny:' : 'User:'} ${text}`
-            )
-            .join('\n\n');
-
-          const chatTranscript = encodeURIComponent(chatLog);
-          const helpLink = `${
-            config.HELP_FORM_URL
-          }?transcript=${chatTranscript}`;
-
-          const helpMessage = createMessage({
-            text: `Hi, I’m Benny!  
-              I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall 2019. 
-              I’m still learning, so if I’m not able to help you, [please contact Admissions](${helpLink}).`,
-            type: 'bot'
-          });
-
-          dispatch({ type: actionType.ADD_MESSAGE, message: helpMessage });
+          dispatch({ type: actionType.ADD_MESSAGE, message: noAnswerMessage });
           return;
         }
 
@@ -155,12 +136,7 @@ const GlobalStateProvider = ({ ...props }) => {
         // Clear loading state
         dispatch({ type: actionType.LOADING_DONE });
 
-        // Display error message
-        const errorMessage = createMessage({
-          type: 'bot',
-          text: `Sorry, I'm having trouble retrieving that info. Please ask again in a moment.`
-        });
-        dispatch({ type: actionType.ADD_MESSAGE, message: errorMessage });
+        dispatch({ type: actionType.ADD_MESSAGE, message: noAnswerMessage });
       }
     },
     addBotMessage(message) {
