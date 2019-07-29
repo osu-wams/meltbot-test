@@ -1,5 +1,5 @@
-import 'jest-dom/extend-expect';
-import 'react-testing-library/cleanup-after-each';
+import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/react/cleanup-after-each'
 import 'jest-styled-components';
 import ReactGA from 'react-ga';
 import config from './config';

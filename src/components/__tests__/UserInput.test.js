@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from 'react-testing-library';
+import { render, fireEvent } from '@testing-library/react';
 import UserInput from '../UserInput';
 import { GlobalStateProvider } from '../../GlobalState';
 
@@ -12,8 +12,7 @@ describe('<UserInput />', () => {
         <UserInput />
       </GlobalStateProvider>
     );
-
-    expect(getByTestId(/userinput/i)).toBeInTheDocument();
+    expect(getByTestId('UserInput')).toBeInTheDocument();
   });
 
   it('should send a message when enter key pressed', () => {

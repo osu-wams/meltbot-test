@@ -1,10 +1,9 @@
 import React from 'react';
 import {
   render,
-  cleanup,
   fireEvent,
   waitForElement
-} from 'react-testing-library';
+} from '@testing-library/react';
 import { GlobalStateProvider } from '../../GlobalState';
 import Header from '../Header';
 

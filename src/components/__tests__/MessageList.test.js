@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from 'react-testing-library';
+import { render, fireEvent } from '@testing-library/react';
 import MessageList from '../MessageList';
 import { GlobalStateProvider } from '../../GlobalState';
 
@@ -61,7 +61,7 @@ describe('<MessageList />', () => {
 
   it('should send a message when a follow-up question is clicked', () => {
     const postMessage = jest.fn();
-    const { getByTestId } = render(
+    const { getByText } = render(
       <GlobalStateProvider
         value={{ state: { messages }, actions: { postMessage } }}
       >
@@ -69,7 +69,7 @@ describe('<MessageList />', () => {
       </GlobalStateProvider>
     );
 
-    const followUpButton = getByTestId(/followup-button/i);
+    const followUpButton = getByText(/What is your name/i);
     fireEvent.click(followUpButton);
 
     expect(postMessage).toHaveBeenCalledTimes(1);
