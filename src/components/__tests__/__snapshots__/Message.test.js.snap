@@ -26,7 +26,8 @@ exports[`BotMessage - Message with type="bot" is styled appropriately 1`] = `
   hyphens: auto;
 }
 
-.c0 > span + p {
+.c0 > span + p,
+.c0 > div + p {
   margin-top: 0;
 }
 
@@ -81,7 +82,8 @@ exports[`FollowUpQuestion - Message with no type - is styled appropriately 1`] =
   hyphens: auto;
 }
 
-.c0 > span + p {
+.c0 > span + p,
+.c0 > div + p {
   margin-top: 0;
 }
 
@@ -124,7 +126,8 @@ exports[`UserMessage - Message with type="user" is styled appropriately 1`] = `
   hyphens: auto;
 }
 
-.c0 > span + p {
+.c0 > span + p,
+.c0 > div + p {
   margin-top: 0;
 }
 

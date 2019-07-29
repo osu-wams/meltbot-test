@@ -17,8 +17,9 @@ const StyledMessage = styled.div`
     -ms-hyphens: auto;
     hyphens: auto;
   }
-  & > span + p {
-    /* first <p> element after VisuallyHiddem */
+  /* Remove top margin for first <p> element after VisuallyHiddem */
+  & > span + p,
+  & > div + p {
     margin-top: 0;
   }
   & > :last-child {
