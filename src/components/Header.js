@@ -99,6 +99,9 @@ const Header = () => {
     });
   };
 
+  const d = new Date();
+  const year = d.getFullYear();
+
   return (
     <HeaderWrapper>
       <ReactGA.OutboundLink
@@ -145,7 +148,7 @@ const Header = () => {
         <p>
           Hi, I’m Benny!
           <br />I am here to help answer questions for first-year students
-          starting at OSU (Corvallis campus) Fall 2019. I’m still learning, so
+          starting at OSU (Corvallis campus) Fall {year}. I’m still learning, so
           if I’m not able to help you, please{' '}
           <a
             href={config.HELP_FORM_URL}

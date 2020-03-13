@@ -29,9 +29,12 @@ const App = () => {
     actions: { postMessage, addBotMessage, loadingStart, loadingDone }
   } = useContext(GlobalStateContext);
 
+  const d = new Date();
+  const year = d.getFullYear();
+
   const helpLink = config.HELP_FORM_URL;
   const welcomeMessage = `Hi, I’m Benny!  
-      I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall 2019. 
+      I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall ${year}. 
       I’m still learning, so if I’m not able to help you, please [contact Admissions](${helpLink}).`;
 
   useEffect(() => {
@@ -49,8 +52,7 @@ const App = () => {
 
       const initialMessage = createMessage({
         type: 'bot',
-        text:
-          'Hello, I am Benny. I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall 2019. How can I help?',
+        text: `Hello, I am Benny. I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall ${year}. How can I help?`,
         followUpQuestions: initialQuestions
       });
 
