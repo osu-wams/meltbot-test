@@ -5,13 +5,13 @@
 version: 2.1
 
 orbs:
-  aws-s3: circleci/aws-s3@1.0.3
-  aws-cli: circleci/aws-cli@0.1.13
+  aws-s3: circleci/aws-s3@1.0.15
+  aws-cli: circleci/aws-cli@0.1.22
 
 executors:
   node-executor:
     docker:
-      - image: circleci/node:8.12.0
+      - image: circleci/node:13.11.0
     working_directory: ~/project
 
 jobs:
