@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  waitForElement
-} from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { GlobalStateProvider } from '../../GlobalState';
 import Header from '../Header';
 
@@ -16,20 +13,23 @@ test('Renders without errors', () => {
 });
 
 test('Modal will open and close when appropriate buttons are clicked', async () => {
-  const { getByText, getByTestId } = renderWithGlobalState(<Header />);
+  const { findByText, getByTestId, queryByText } = renderWithGlobalState(
+    <Header />
+  );
 
   // Click on question icon
   const openBtn = getByTestId('about-benny');
-  fireEvent.click(openBtn);
+  userEvent.click(openBtn);
 
   // Verify Modal is present
-  const aboutModal = await waitForElement(() => getByText('Chat with Benny'));
+  const aboutModal = await findByText('Chat with Benny');
   expect(aboutModal).toBeInTheDocument();
 
   // Click close button on modal
   const closeBtn = getByTestId('close-about');
-  fireEvent.click(closeBtn);
+  userEvent.click(closeBtn);
 
+  const aboutModalAfterClose = queryByText('Chat with Benny');
   // Verify modal closed
-  expect(aboutModal).not.toBeInTheDocument();
+  expect(aboutModalAfterClose).toBeNull();
 });

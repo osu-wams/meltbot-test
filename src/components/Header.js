@@ -136,13 +136,17 @@ const Header = () => {
           Help
         </HelpLink>
       </IconWrapper>
-      <Dialog isOpen={showDialog} onDismiss={() => setShowDialog(false)}>
+      <Dialog
+        isOpen={showDialog}
+        onDismiss={() => setShowDialog(false)}
+        aria-labelledby="chatbotDialog-title"
+      >
         <CloseButton
           data-testid="close-about"
           onClick={() => setShowDialog(false)}
         />
 
-        <h2>
+        <h2 id="chatbotDialog-title">
           Chat with Benny<Beta>Beta</Beta>
         </h2>
         <p>

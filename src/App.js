@@ -37,6 +37,8 @@ const App = () => {
       I am here to help answer questions for first-year students starting at OSU (Corvallis campus) Fall ${year}. 
       I’m still learning, so if I’m not able to help you, please [contact Admissions](${helpLink}).`;
 
+  /* eslint-disable react-hooks/exhaustive-deps  */
+
   useEffect(() => {
     // Post seed (initial) question if provided in query params
     const params = queryString.parse(window.location.search);
@@ -62,6 +64,7 @@ const App = () => {
       }, 1000);
     }
   }, []);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   useEffect(() => {
     ReactGA.pageview('/');
