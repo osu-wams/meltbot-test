@@ -1,4 +1,4 @@
-export default {
+const configs = {
   // AWS Configuration (Lex, Cognito)
   AWS_REGION: process.env.REACT_APP_AWS_REGION,
   AWS_COGNITO_IDENTITY_POOL_ID:
@@ -10,3 +10,4 @@ export default {
   // App Help/Feedback Form URL
   HELP_FORM_URL: process.env.REACT_APP_HELP_FORM_URL
 };
+export default configs;

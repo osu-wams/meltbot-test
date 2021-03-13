@@ -11,7 +11,7 @@ orbs:
 executors:
   node-executor:
     docker:
-      - image: circleci/node:13.10
+      - image: circleci/node:14.15.4
     working_directory: ~/project
 
 jobs:
