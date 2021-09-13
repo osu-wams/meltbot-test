@@ -1,0 +1,46 @@
+name: Build and Push Server Application to AWS DEVELOPMENT
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build client
+        run: |
+          yarn install --frozen-lockfile
+          yarn run build
+        env:
+          FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
+          REACT_APP_AWS_REGION: ${{ secrets.AWS_REGION }}
+          REACT_APP_AWS_LEX_BOT_NAME: ${{ secrets.AWS_LEX_BOT_NAME_DEV }}
+          REACT_APP_AWS_LEX_BOT_ALIAS: ${{ secrets.AWS_LEX_BOT_ALIAS_DEV }}
+          REACT_APP_AWS_COGNITO_IDENTITY_POOL_ID: ${{ secrets.AWS_COGNITO_IDENTITY_POOL_ID_DEV }}
+          REACT_APP_HELP_FORM_URL: ${{ secrets.HELP_FORM_URL }}
+      - name: Copy client to S3 and flush Cloudfront cache for DEVELOPMENT
+        run: |
+          COMMIT_LINK=https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA
+          COMMIT_MESSAGE=$(git log --format=%B -n 1 $GITHUB_SHA | cat -)
+          POST_DATA="{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"Benny Bot Development FrontEnd Deployment\", \"sections\": [{ \"activityTitle\": \"Benny Bot: development\", \"activitySubtitle\": \"Status: DEPLOYMENT_STARTED, Message: $COMMIT_MESSAGE $COMMIT_LINK\", \"markdown\": false }] }"
+          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}
+          s3_bucket_url=s3://${{ secrets.AWS_S3_BUCKET_URL_DEV }}
+          aws s3 sync build ${s3_bucket_url}
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_DEV }} --paths /index.html
+          POST_DATA="{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"Benny Bot Development Frontend Deployment\", \"sections\": [{ \"activityTitle\": \"Benny Bot: development\", \"activitySubtitle\": \"Status: DEPLOYMENT_COMPLETE, Message: $COMMIT_MESSAGE $COMMIT_LINK\", \"markdown\": false }] }"
+          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}
+        env:
+          FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
